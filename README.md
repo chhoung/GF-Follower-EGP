@@ -5,3 +5,4 @@ This project is about exploring how AI can help with software testing for an iOS
 The idea is simple: use user stories to automatically create test cases instead of writing them all by hand.
 
 - Connected to Jira 
+- Found Jira project key EGP
