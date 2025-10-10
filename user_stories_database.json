@@ -1,10 +1,10 @@
 {
     "project": "GHFollowers - AI Testing User Stories",
-    "extracted_date": "2024-10-06",
-    "total_stories": 35,
+    "extracted_date": "2024-07-06",
+    "total_stories": 10,
     "categories": {
         "search_functionality": {
-            "description": "User stories related to searching for GitHub users",
+            "description": "Core: basic search and validation",
             "stories": [
                 {
                     "id": "US-001",
@@ -78,7 +78,7 @@
             ]
         },
         "follower_browsing": {
-            "description": "User stories related to browsing and viewing followers",
+            "description": "Core: view followers",
             "stories": [
                 {
                     "id": "US-005",
@@ -87,30 +87,11 @@
                     "acceptance_criteria": [
                         "Followers are displayed in a 3-column grid",
                         "Each follower shows avatar image and username",
-                        "Grid layout adapts to different screen sizes",
-                        "Loading indicator appears while fetching followers"
+                        "Grid layout adapts to different screen sizes"
                     ],
                     "ui_elements": [
                         "collectionView",
                         "FollowerCell"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-006",
-                    "title": "Pagination for Followers",
-                    "description": "As a user, I want to scroll through all followers with pagination so I can see everyone",
-                    "acceptance_criteria": [
-                        "Initial load shows first 100 followers",
-                        "More followers load when scrolling to bottom",
-                        "Loading indicator appears during pagination",
-                        "Pagination stops when no more followers available"
-                    ],
-                    "ui_elements": [
-                        "collectionView",
-                        "scrollView"
                     ],
                     "screen": "FollowerListVC",
                     "priority": "high",
@@ -150,28 +131,11 @@
                     "screen": "FollowerListVC",
                     "priority": "medium",
                     "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-009",
-                    "title": "Loading State During Fetch",
-                    "description": "As a user, I want to see a loading indicator while followers are being fetched so I know the app is working",
-                    "acceptance_criteria": [
-                        "Loading view appears during network requests",
-                        "Loading view shows spinner animation",
-                        "Loading view disappears when data loads",
-                        "Loading view appears for pagination too"
-                    ],
-                    "ui_elements": [
-                        "loadingView"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
                 }
             ]
         },
         "user_details": {
-            "description": "User stories related to viewing detailed user information",
+            "description": "Core: view basic user info",
             "stories": [
                 {
                     "id": "US-010",
@@ -179,8 +143,7 @@
                     "description": "As a user, I want to tap on a follower to see their detailed profile information so I can learn more about them",
                     "acceptance_criteria": [
                         "Tapping follower cell opens UserInfoVC",
-                        "UserInfoVC shows in modal presentation",
-                        "UserInfoVC displays user's detailed information",
+                        "UserInfoVC displays user's basic information",
                         "UserInfoVC has 'Done' button to dismiss"
                     ],
                     "ui_elements": [
@@ -190,162 +153,19 @@
                     "screen": "FollowerListVC -> UserInfoVC",
                     "priority": "high",
                     "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-011",
-                    "title": "View User Statistics",
-                    "description": "As a user, I want to see user statistics (repos, gists, followers, following) so I understand their GitHub activity",
-                    "acceptance_criteria": [
-                        "Shows public repositories count",
-                        "Shows public gists count",
-                        "Shows followers count",
-                        "Shows following count",
-                        "Statistics are displayed with appropriate icons"
-                    ],
-                    "ui_elements": [
-                        "GFRepoItemVC",
-                        "GFFollowerItemVC"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-012",
-                    "title": "Access GitHub Profile",
-                    "description": "As a user, I want to tap 'GitHub Profile' to open their GitHub profile in Safari so I can visit their repositories",
-                    "acceptance_criteria": [
-                        "Tapping 'GitHub Profile' opens Safari",
-                        "Safari shows user's GitHub profile page",
-                        "Safari has green tint color matching app theme",
-                        "User can navigate back to app"
-                    ],
-                    "ui_elements": [
-                        "actionButton",
-                        "SafariViewController"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-013",
-                    "title": "View Account Creation Date",
-                    "description": "As a user, I want to see when the user joined GitHub so I know how long they've been active",
-                    "acceptance_criteria": [
-                        "Shows 'GitHub since [Month Year]' format",
-                        "Date is formatted correctly",
-                        "Date appears at bottom of user info screen"
-                    ],
-                    "ui_elements": [
-                        "dateLabel"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-014",
-                    "title": "Get User's Followers",
-                    "description": "As a user, I want to tap 'Get Followers' to see this user's followers so I can explore their network",
-                    "acceptance_criteria": [
-                        "Tapping 'Get Followers' dismisses UserInfoVC",
-                        "Navigates to FollowerListVC for that user",
-                        "Shows loading while fetching their followers",
-                        "Updates navigation title to new username"
-                    ],
-                    "ui_elements": [
-                        "actionButton"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-015",
-                    "title": "Handle User with No Followers",
-                    "description": "As a user, I want to see a message when trying to get followers for a user who has none so I understand the situation",
-                    "acceptance_criteria": [
-                        "Alert appears when user has 0 followers",
-                        "Alert shows 'No followers' title",
-                        "Alert shows 'This user has no followers. What a shame 😞.' message",
-                        "Alert has 'So sad' button"
-                    ],
-                    "ui_elements": [
-                        "alert"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
                 }
             ]
         },
         "favorites_management": {
-            "description": "User stories related to managing favorite users",
+            "description": "Core: empty favorites placeholder",
             "stories": [
-                {
-                    "id": "US-016",
-                    "title": "Add User to Favorites",
-                    "description": "As a user, I want to add users to my favorites so I can quickly access them later",
-                    "acceptance_criteria": [
-                        "Tapping '+' button in FollowerListVC adds user to favorites",
-                        "Shows loading indicator during add process",
-                        "Shows success alert 'You have successfully favorited this user 🎉'",
-                        "User is saved to local storage"
-                    ],
-                    "ui_elements": [
-                        "addButton",
-                        "alert"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-017",
-                    "title": "View Favorites List",
-                    "description": "As a user, I want to view my saved favorites in a list so I can manage them",
-                    "acceptance_criteria": [
-                        "Favorites tab shows list of saved users",
-                        "Each favorite shows avatar and username",
-                        "List is sorted alphabetically",
-                        "Tapping favorite navigates to their followers"
-                    ],
-                    "ui_elements": [
-                        "tableView",
-                        "FavoriteCell"
-                    ],
-                    "screen": "FavoritesListVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-018",
-                    "title": "Remove User from Favorites",
-                    "description": "As a user, I want to remove users from favorites by swiping so I can clean up my list",
-                    "acceptance_criteria": [
-                        "Swiping left on favorite shows delete option",
-                        "Tapping delete removes user from favorites",
-                        "Row animates out with left swipe animation",
-                        "User is removed from local storage"
-                    ],
-                    "ui_elements": [
-                        "tableView",
-                        "deleteAction"
-                    ],
-                    "screen": "FavoritesListVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
                 {
                     "id": "US-019",
                     "title": "Empty Favorites State",
                     "description": "As a user, I want to see a helpful message when I have no favorites yet so I know what to do",
                     "acceptance_criteria": [
                         "Empty state view appears when no favorites",
-                        "Shows 'No Favorites' message",
-                        "Shows 'Add a favorite on the follower list screen' subtitle",
-                        "Shows star icon"
+                        "Shows 'No Favorites' message"
                     ],
                     "ui_elements": [
                         "emptyStateView"
@@ -371,300 +191,11 @@
                     "test_type": "ui_automation"
                 }
             ]
-        },
-        "navigation_ux": {
-            "description": "User stories related to navigation and user experience",
-            "stories": [
-                {
-                    "id": "US-021",
-                    "title": "Tab Bar Navigation",
-                    "description": "As a user, I want to navigate between Search and Favorites tabs so I can access different features",
-                    "acceptance_criteria": [
-                        "Tab bar shows Search and Favorites tabs",
-                        "Tapping Search tab shows search screen",
-                        "Tapping Favorites tab shows favorites list",
-                        "Active tab is highlighted in green"
-                    ],
-                    "ui_elements": [
-                        "tabBar",
-                        "tabBarItem"
-                    ],
-                    "screen": "GFTabBarController",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-022",
-                    "title": "Navigation Bar Behavior",
-                    "description": "As a user, I want the navigation bar to behave appropriately on different screens so I have consistent navigation",
-                    "acceptance_criteria": [
-                        "Search screen hides navigation bar",
-                        "Follower list shows navigation bar with username title",
-                        "User info screen shows 'Done' button",
-                        "Favorites screen shows 'Favorites' title"
-                    ],
-                    "ui_elements": [
-                        "navigationBar",
-                        "navigationItem"
-                    ],
-                    "screen": "All screens",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-023",
-                    "title": "Error Handling",
-                    "description": "As a user, I want to see appropriate error messages when something goes wrong so I understand what happened",
-                    "acceptance_criteria": [
-                        "Network errors show 'Unable to complete your request. Please check your internet connection'",
-                        "Invalid responses show 'Invalid response from the server. Please try again.'",
-                        "Invalid data shows 'The data received from the server was invalid. Please try again.'",
-                        "All errors have 'Ok' button to dismiss"
-                    ],
-                    "ui_elements": [
-                        "alert"
-                    ],
-                    "screen": "All screens",
-                    "priority": "high",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-024",
-                    "title": "Success Feedback",
-                    "description": "As a user, I want to see success messages when actions complete so I get positive feedback",
-                    "acceptance_criteria": [
-                        "Adding to favorites shows success message",
-                        "Success messages are positive and encouraging",
-                        "Success messages have appropriate emoji",
-                        "Success messages auto-dismiss or have action button"
-                    ],
-                    "ui_elements": [
-                        "alert"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
-                }
-            ]
-        },
-        "api_integration": {
-            "description": "User stories related to API interactions and data handling",
-            "stories": [
-                {
-                    "id": "US-025",
-                    "title": "Fetch User Followers",
-                    "description": "As a user, I want the app to fetch followers from GitHub API so I can see real data",
-                    "acceptance_criteria": [
-                        "API call to GitHub followers endpoint",
-                        "Handles pagination (100 followers per page)",
-                        "Parses JSON response correctly",
-                        "Handles network timeouts gracefully"
-                    ],
-                    "ui_elements": [
-                        "NetworkManager"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "high",
-                    "test_type": "api_testing"
-                },
-                {
-                    "id": "US-026",
-                    "title": "Fetch User Information",
-                    "description": "As a user, I want the app to fetch detailed user information from GitHub API so I can see complete profiles",
-                    "acceptance_criteria": [
-                        "API call to GitHub user endpoint",
-                        "Fetches user profile data",
-                        "Handles missing optional fields",
-                        "Parses dates correctly"
-                    ],
-                    "ui_elements": [
-                        "NetworkManager"
-                    ],
-                    "screen": "UserInfoVC",
-                    "priority": "high",
-                    "test_type": "api_testing"
-                },
-                {
-                    "id": "US-027",
-                    "title": "Image Loading and Caching",
-                    "description": "As a user, I want avatar images to load quickly and be cached so I have a smooth experience",
-                    "acceptance_criteria": [
-                        "Avatar images load from URLs",
-                        "Images are cached for performance",
-                        "Placeholder shown while loading",
-                        "Failed loads show placeholder"
-                    ],
-                    "ui_elements": [
-                        "GFAvatarImageView"
-                    ],
-                    "screen": "All screens",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-028",
-                    "title": "Handle Invalid Username",
-                    "description": "As a user, I want to see an error when I search for a non-existent username so I know the user doesn't exist",
-                    "acceptance_criteria": [
-                        "API returns 404 for invalid username",
-                        "App shows appropriate error message",
-                        "Error message is user-friendly",
-                        "User can try searching again"
-                    ],
-                    "ui_elements": [
-                        "alert"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "high",
-                    "test_type": "api_testing"
-                }
-            ]
-        },
-        "data_persistence": {
-            "description": "User stories related to local data storage and persistence",
-            "stories": [
-                {
-                    "id": "US-029",
-                    "title": "Save Favorites Locally",
-                    "description": "As a user, I want my favorites to be saved locally so they persist between app launches",
-                    "acceptance_criteria": [
-                        "Favorites saved to Core Data",
-                        "Favorites persist after app restart",
-                        "Favorites load quickly on app launch",
-                        "Data integrity maintained"
-                    ],
-                    "ui_elements": [
-                        "PersistenceManager"
-                    ],
-                    "screen": "FavoritesListVC",
-                    "priority": "high",
-                    "test_type": "data_testing"
-                },
-                {
-                    "id": "US-030",
-                    "title": "Load Favorites on Launch",
-                    "description": "As a user, I want my favorites to load automatically when I open the app so I can access them immediately",
-                    "acceptance_criteria": [
-                        "Favorites load when FavoritesListVC appears",
-                        "Loading is fast and smooth",
-                        "Empty state shown if no favorites",
-                        "Error handling for corrupted data"
-                    ],
-                    "ui_elements": [
-                        "PersistenceManager"
-                    ],
-                    "screen": "FavoritesListVC",
-                    "priority": "high",
-                    "test_type": "data_testing"
-                }
-            ]
-        },
-        "accessibility": {
-            "description": "User stories related to accessibility and inclusive design",
-            "stories": [
-                {
-                    "id": "US-031",
-                    "title": "VoiceOver Support",
-                    "description": "As a user with visual impairments, I want the app to work with VoiceOver so I can navigate using screen reader",
-                    "acceptance_criteria": [
-                        "All buttons have accessibility labels",
-                        "Images have accessibility descriptions",
-                        "Navigation is logical with VoiceOver",
-                        "Focus management works correctly"
-                    ],
-                    "ui_elements": [
-                        "All UI elements"
-                    ],
-                    "screen": "All screens",
-                    "priority": "high",
-                    "test_type": "accessibility_testing"
-                },
-                {
-                    "id": "US-032",
-                    "title": "Dynamic Type Support",
-                    "description": "As a user, I want text to scale with my system font size preferences so I can read comfortably",
-                    "acceptance_criteria": [
-                        "Text scales with Dynamic Type settings",
-                        "Layout adapts to larger text sizes",
-                        "No text truncation at larger sizes",
-                        "UI remains functional at all sizes"
-                    ],
-                    "ui_elements": [
-                        "All text elements"
-                    ],
-                    "screen": "All screens",
-                    "priority": "medium",
-                    "test_type": "accessibility_testing"
-                }
-            ]
-        },
-        "performance": {
-            "description": "User stories related to app performance and optimization",
-            "stories": [
-                {
-                    "id": "US-033",
-                    "title": "Smooth Scrolling Performance",
-                    "description": "As a user, I want smooth scrolling through followers so I have a pleasant browsing experience",
-                    "acceptance_criteria": [
-                        "Collection view scrolls at 60fps",
-                        "No stuttering or lag during scroll",
-                        "Images load progressively",
-                        "Memory usage remains stable"
-                    ],
-                    "ui_elements": [
-                        "collectionView"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "medium",
-                    "test_type": "performance_testing"
-                },
-                {
-                    "id": "US-034",
-                    "title": "Fast App Launch",
-                    "description": "As a user, I want the app to launch quickly so I can start using it immediately",
-                    "acceptance_criteria": [
-                        "App launches within 2 seconds",
-                        "Initial screen appears quickly",
-                        "No unnecessary loading delays",
-                        "Smooth launch animation"
-                    ],
-                    "ui_elements": [
-                        "App launch"
-                    ],
-                    "screen": "App startup",
-                    "priority": "medium",
-                    "test_type": "performance_testing"
-                },
-                {
-                    "id": "US-035",
-                    "title": "Efficient Memory Usage",
-                    "description": "As a user, I want the app to use memory efficiently so it doesn't slow down my device",
-                    "acceptance_criteria": [
-                        "Memory usage stays reasonable",
-                        "Images are properly cached and released",
-                        "No memory leaks during navigation",
-                        "App handles memory warnings gracefully"
-                    ],
-                    "ui_elements": [
-                        "All components"
-                    ],
-                    "screen": "All screens",
-                    "priority": "medium",
-                    "test_type": "performance_testing"
-                }
-            ]
         }
     },
-    "test_coverage_summary": {
-        "ui_automation": 25,
-        "api_testing": 4,
-        "data_testing": 2,
-        "accessibility_testing": 2,
-        "performance_testing": 3
-    },
     "priority_distribution": {
-        "high": 20,
-        "medium": 15,
+        "high": 5,
+        "medium": 5,
         "low": 0
     }
 }
