@@ -2,6 +2,9 @@ name: Generate Test Cases from User Stories
 
 on:
   workflow_dispatch: # allows manual triggering
+  push:
+    branches:
+      - develop
 
 permissions:
   contents: write
