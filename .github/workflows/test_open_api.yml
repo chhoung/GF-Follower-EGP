@@ -4,23 +4,37 @@ on:
   workflow_dispatch:  # allows manual triggering
 
 permissions:
-  models: read  # required for accessing GitHub Models API
+  contents: write       # allow committing generated file
+  models: read          # required for accessing GitHub Models API
 
 jobs:
   test-model:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Call GitHub AI model
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Call GitHub AI model to generate Swift file
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -s "https://models.github.ai/inference/chat/completions" \
+          RESPONSE=$(curl -s "https://models.github.ai/inference/chat/completions" \
             -H "Content-Type: application/json" \
             -H "Authorization: Bearer $GITHUB_TOKEN" \
             -d '{
               "model": "openai/gpt-4o-mini",
               "messages": [
-                {"role": "user", "content": "Count 1 to 20 in word for me"}
+                {"role": "user", "content": "Write a simple Swift file with a header comment showing filename, author, and date, and a function that prints Hello World."}
               ]
-            }' | jq
+            }' | jq -r '.choices[0].message.content')
+
+          echo "$RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
+
+      - name: Commit and push generated file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add GHFollowersTests/GeneratedUserStoryTests.swift
+          git commit -m "Add generated user story file" || echo "No changes to commit"
+          git push
