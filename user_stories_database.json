@@ -1,7 +1,7 @@
 {
     "project": "GHFollowers - AI Testing User Stories",
-    "extracted_date": "2024-07-06",
-    "total_stories": 10,
+    "extracted_date": "2025-10-11",
+    "total_stories": 9,
     "categories": {
         "search_functionality": {
             "description": "Core: basic search and validation",
@@ -9,7 +9,7 @@
                 {
                     "id": "US-001",
                     "title": "Search for GitHub User",
-                    "description": "As a user, I want to search for a GitHub user by entering their username so I can explore their profile and followers",
+                    "description": "As a user, I want to search for a GitHub user by entering their username so I can explore their profile and followers.",
                     "acceptance_criteria": [
                         "User can enter a username in the text field",
                         "User can tap 'Get Followers' button to search",
@@ -27,7 +27,7 @@
                 {
                     "id": "US-002",
                     "title": "Handle Empty Username Search",
-                    "description": "As a user, I want to see a validation message when I try to search without entering a username so I know what to do",
+                    "description": "As a user, I want to see a validation message when I try to search without entering a username so I know what to do.",
                     "acceptance_criteria": [
                         "Alert appears when 'Get Followers' is tapped with empty text field",
                         "Alert shows title 'Empty Username'",
@@ -45,7 +45,7 @@
                 {
                     "id": "US-003",
                     "title": "Dismiss Keyboard",
-                    "description": "As a user, I want to dismiss the keyboard by tapping outside the text field for better user experience",
+                    "description": "As a user, I want to dismiss the keyboard by tapping outside the text field for better user experience.",
                     "acceptance_criteria": [
                         "Keyboard dismisses when user taps outside text field",
                         "Text field loses focus",
@@ -62,7 +62,7 @@
                 {
                     "id": "US-004",
                     "title": "Clear Text Field on Return",
-                    "description": "As a user, I want the text field to be cleared when I return to the search screen so I can start fresh",
+                    "description": "As a user, I want the text field to be cleared when I return to the search screen so I can start fresh.",
                     "acceptance_criteria": [
                         "Text field is empty when returning to SearchVC",
                         "Previous search text is cleared",
@@ -83,7 +83,7 @@
                 {
                     "id": "US-005",
                     "title": "View Followers in Grid",
-                    "description": "As a user, I want to see a user's followers displayed in a grid layout so I can browse them visually",
+                    "description": "As a user, I want to see a user's followers displayed in a grid layout so I can browse them visually.",
                     "acceptance_criteria": [
                         "Followers are displayed in a 3-column grid",
                         "Each follower shows avatar image and username",
@@ -98,9 +98,9 @@
                     "test_type": "ui_automation"
                 },
                 {
-                    "id": "US-007",
+                    "id": "US-006",
                     "title": "Search Through Followers",
-                    "description": "As a user, I want to search through the current followers by username so I can find specific people",
+                    "description": "As a user, I want to search through the current followers by username so I can find specific people.",
                     "acceptance_criteria": [
                         "Search bar appears in navigation",
                         "Search filters followers in real-time",
@@ -116,14 +116,13 @@
                     "test_type": "ui_automation"
                 },
                 {
-                    "id": "US-008",
+                    "id": "US-007",
                     "title": "Empty State for No Followers",
-                    "description": "As a user, I want to see a helpful message when a user has no followers so I understand the situation",
+                    "description": "As a user, I want to see a helpful message when a user has no followers so I understand the situation.",
                     "acceptance_criteria": [
                         "Empty state view appears when no followers",
                         "Shows 'No Followers' message",
-                        "Shows 'This user has no followers. Go follow them!' subtitle",
-                        "Shows person.slash icon"
+                        "Shows 'This user has no followers. Go follow them!' subtitle"
                     ],
                     "ui_elements": [
                         "emptyStateView"
@@ -131,23 +130,18 @@
                     "screen": "FollowerListVC",
                     "priority": "medium",
                     "test_type": "ui_automation"
-                }
-            ]
-        },
-        "user_details": {
-            "description": "Core: view basic user info",
-            "stories": [
+                },
                 {
-                    "id": "US-010",
-                    "title": "View User Profile Details",
-                    "description": "As a user, I want to tap on a follower to see their detailed profile information so I can learn more about them",
+                    "id": "US-008",
+                    "title": "Selecting Follower Opens User Info",
+                    "description": "As a user, I want to tap on a follower to see their detailed profile so I can learn more about them.",
                     "acceptance_criteria": [
-                        "Tapping follower cell opens UserInfoVC",
-                        "UserInfoVC displays user's basic information",
-                        "UserInfoVC has 'Done' button to dismiss"
+                        "Tapping follower cell presents UserInfoVC",
+                        "UserInfoVC shows selected user's info",
+                        "Presentation is modal inside navigation controller"
                     ],
                     "ui_elements": [
-                        "FollowerCell",
+                        "collectionView",
                         "UserInfoVC"
                     ],
                     "screen": "FollowerListVC -> UserInfoVC",
@@ -160,12 +154,13 @@
             "description": "Core: empty favorites placeholder",
             "stories": [
                 {
-                    "id": "US-019",
+                    "id": "US-009",
                     "title": "Empty Favorites State",
-                    "description": "As a user, I want to see a helpful message when I have no favorites yet so I know what to do",
+                    "description": "As a user, I want to see a helpful message when I have no favorites yet so I know what to do.",
                     "acceptance_criteria": [
                         "Empty state view appears when no favorites",
-                        "Shows 'No Favorites' message"
+                        "Shows 'No Favorites' message",
+                        "Shows 'Add a favorite on the follower list screen' subtitle"
                     ],
                     "ui_elements": [
                         "emptyStateView"
@@ -173,28 +168,12 @@
                     "screen": "FavoritesListVC",
                     "priority": "medium",
                     "test_type": "ui_automation"
-                },
-                {
-                    "id": "US-020",
-                    "title": "Handle Duplicate Favorites",
-                    "description": "As a user, I want to see a message when trying to add a user who is already in favorites so I know they're already saved",
-                    "acceptance_criteria": [
-                        "Alert appears when trying to add existing favorite",
-                        "Alert shows 'You've already favorited this user. You must REALLY like them!' message",
-                        "Alert has 'Ok' button to dismiss"
-                    ],
-                    "ui_elements": [
-                        "alert"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
                 }
             ]
         }
     },
     "priority_distribution": {
-        "high": 5,
+        "high": 4,
         "medium": 5,
         "low": 0
     }
