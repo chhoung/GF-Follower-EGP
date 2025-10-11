@@ -8,16 +8,9 @@ on:
     #     required: false
     #     type: string
     #     default: ''
-  push:
-    paths:
-      - 'user_stories_database.json'
-  pull_request:
-    paths:
-      - 'user_stories_database.json'
 
 permissions:
   contents: write
-  pull-requests: write
   models: read
 
 jobs:
