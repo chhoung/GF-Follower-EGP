@@ -18,7 +18,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  models: write
+  models: write-all
 
 jobs:
   generate-tests:
