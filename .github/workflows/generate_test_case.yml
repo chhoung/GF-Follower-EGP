@@ -1,0 +1,150 @@
+name: Generate Test Cases from User Stories
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Number of user stories to generate (leave empty for all)'
+        required: false
+        type: string
+        default: ''
+  push:
+    paths:
+      - 'user_stories_database.json'
+  pull_request:
+    paths:
+      - 'user_stories_database.json'
+
+permissions:
+  contents: write
+  pull-requests: write
+  models: write
+
+jobs:
+  generate-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up prompt for GitHub Model
+      run: |
+        cat > ai_prompt.txt << 'EOF'
+        You are an AI coding assistant for the GHFollowers iOS app (Swift, Swift Testing).
+        Goal: Generate Swift tests from user stories JSON at project root: user_stories_database.json.
+        Rules:
+        - Use Swift Testing (import Testing), not XCTest.
+        - Use @MainActor on test structs that touch UIKit.
+        - Place acceptance criteria under a block comment (/* ... */) with bullets prefixed by "- ".
+        - File header should mark it AUTO-GENERATED and import GHFollowers with @testable.
+        - Prefer one struct per generated file; name it GeneratedUserStoryTests (or Generated_<Category>_Tests if split).
+        
+        IMPORTANT CONSISTENCY REQUIREMENTS:
+        - Follow the exact same patterns as the existing GHFollowersTests.swift file
+        - Use the same test naming convention: test{Description}()
+        - Use the same comment format: // US-XXX: {Title}
+        - Use the same @Test annotation format: @Test("US-XXX: {Description}")
+        - Use the same assertion patterns with #expect()
+        - Use the same UI setup patterns (UIWindow, UINavigationController, etc.)
+        - Use the same error handling patterns with Issue.record()
+        - Use the same RunLoop.current.run() patterns for async operations
+        - Use the same guard statements and optional binding patterns
+        - Use the same view lifecycle triggering patterns (_ = vc.view, loadViewIfNeeded())
+        - Use the same data seeding patterns for test data
+        - Use the same configuration patterns for collection views and search controllers
+        
+        SPECIFIC PATTERNS TO FOLLOW:
+        1. For SearchVC tests: Use UINavigationController + UIWindow setup
+        2. For FollowerListVC tests: Use proper data seeding and configuration
+        3. For UserInfoVC tests: Use modal presentation with navigation controller
+        4. For empty state tests: Use UIContentUnavailableConfiguration assertions
+        5. For search tests: Use UISearchController with proper filtering
+        6. For gesture tests: Check gestureRecognizers array
+        7. For lifecycle tests: Use viewWillAppear() and proper view setup
+        
+        Generate comprehensive, working tests that match the existing codebase style exactly.
+        EOF
+
+    - name: Generate test file using GitHub Model
+      id: generate_tests
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        if [ ! -f "user_stories_database.json" ]; then
+          echo "❌ Error: user_stories_database.json not found"
+          exit 1
+        fi
+
+        echo "🧠 Generating test cases via GitHub Model..."
+        prompt=$(cat ai_prompt.txt)
+        stories=$(cat user_stories_database.json)
+
+        response=$(gh api \
+          -H "X-GitHub-Api-Version: 2023-11-08" \
+          -H "Accept: application/json" \
+          -f model="gpt-4.1" \
+          -f messages="[
+            {\"role\":\"system\",\"content\":\"You are an AI coding assistant.\"},
+            {\"role\":\"user\",\"content\":\"${prompt}\n\nUser stories:\n${stories}\"}
+          ]" \
+          /models/generate)
+
+        mkdir -p GHFollowersTests
+        echo "$response" | jq -r '.choices[0].message.content' > GHFollowersTests/GeneratedUserStoryTests.swift
+
+        if [ -f GHFollowersTests/GeneratedUserStoryTests.swift ]; then
+          echo "✅ Test file generated successfully"
+          echo "file_generated=true" >> $GITHUB_OUTPUT
+        else
+          echo "❌ Test file generation failed"
+          echo "file_generated=false" >> $GITHUB_OUTPUT
+          exit 1
+        fi
+
+    - name: Validate generated tests
+      if: steps.generate_tests.outputs.file_generated == 'true'
+      run: |
+        echo "🔍 Validating generated test file..."
+        FILE=GHFollowersTests/GeneratedUserStoryTests.swift
+
+        grep -q "GeneratedUserStoryTests" $FILE && echo "✅ Struct found" || (echo "❌ Struct not found" && exit 1)
+        grep -q "@MainActor" $FILE && echo "✅ @MainActor annotation found" || (echo "❌ Missing @MainActor" && exit 1)
+        grep -q "import Testing" $FILE && echo "✅ Swift Testing import found" || (echo "❌ Missing import Testing" && exit 1)
+        grep -q "@testable import GHFollowers" $FILE && echo "✅ @testable import GHFollowers found" || (echo "❌ Missing import GHFollowers" && exit 1)
+
+        TEST_COUNT=$(grep -c "@Test" $FILE || echo "0")
+        echo "📊 Generated $TEST_COUNT test methods"
+
+    - name: Show generated test file preview
+      if: steps.generate_tests.outputs.file_generated == 'true'
+      run: |
+        echo "📄 Generated test file preview (first 50 lines):"
+        head -50 GHFollowersTests/GeneratedUserStoryTests.swift
+        echo "==============================================="
+        wc -l GHFollowersTests/GeneratedUserStoryTests.swift
+
+    - name: Create Pull Request
+      if: steps.generate_tests.outputs.file_generated == 'true' && github.event_name == 'push'
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'Auto-generate test cases from user stories'
+        title: 'Auto-generated test cases from user stories'
+        body: |
+          This PR contains automatically generated test cases based on the user stories in `user_stories_database.json`.
+
+          **Generated by:** GitHub Action workflow  
+          **Source:** user_stories_database.json  
+          **Test framework:** Swift Testing  
+          **Pattern:** Follows existing GHFollowersTests.swift structure
+        branch: auto-generated-tests
+        delete-branch: true
+
+    - name: Upload generated test file as artifact
+      if: steps.generate_tests.outputs.file_generated == 'true'
+      uses: actions/upload-artifact@v3
+      with:
+        name: generated-test-file
+        path: GHFollowersTests/GeneratedUserStoryTests.swift
+        retention-days: 30
