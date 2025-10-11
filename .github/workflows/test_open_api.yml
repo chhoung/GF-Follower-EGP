@@ -21,6 +21,6 @@ jobs:
             -d '{
               "model": "openai/gpt-4o-mini",
               "messages": [
-                {"role": "user", "content": "Give me a one-line haiku about coding."}
+                {"role": "user", "content": "Count 1 to 20 in word for me"}
               ]
             }' | jq
