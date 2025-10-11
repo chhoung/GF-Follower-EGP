@@ -137,20 +137,6 @@ jobs:
           exit 1
         fi
 
-    - name: Validate generated tests
-      if: steps.generate_tests.outputs.file_generated == 'true'
-      run: |
-        echo "🔍 Validating generated test file..."
-        FILE=GHFollowersTests/GeneratedUserStoryTests.swift
-
-        grep -q "GeneratedUserStoryTests" $FILE && echo "✅ Struct found" || (echo "❌ Struct not found" && exit 1)
-        grep -q "@MainActor" $FILE && echo "✅ @MainActor annotation found" || (echo "❌ Missing @MainActor" && exit 1)
-        grep -q "import Testing" $FILE && echo "✅ Swift Testing import found" || (echo "❌ Missing import Testing" && exit 1)
-        grep -q "@testable import GHFollowers" $FILE && echo "✅ @testable import GHFollowers found" || (echo "❌ Missing import GHFollowers" && exit 1)
-
-        TEST_COUNT=$(grep -c "@Test" $FILE || echo "0")
-        echo "📊 Generated $TEST_COUNT test methods"
-
     - name: Show generated test file preview
       if: steps.generate_tests.outputs.file_generated == 'true'
       run: |

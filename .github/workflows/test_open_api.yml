@@ -29,7 +29,7 @@ jobs:
               ]
             }' | jq -r '.choices[0].message.content')
 
-          echo "$RESPONSE" > Generated.swift
+          echo "$RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
 
       - name: Commit and push generated file
         run: |
