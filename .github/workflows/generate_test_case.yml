@@ -1,13 +1,7 @@
 name: Generate Test Cases from User Stories
 
 on:
-  workflow_dispatch:
-    # inputs:
-    #   limit:
-    #     description: 'Number of user stories to generate (leave empty for all)'
-    #     required: false
-    #     type: string
-    #     default: ''
+  workflow_dispatch: # allows manual triggering
 
 permissions:
   contents: write
