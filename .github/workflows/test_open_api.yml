@@ -5,7 +5,7 @@ on:
 
 permissions:
   contents: write       # allow committing generated file
-  models: write         # required for accessing GitHub Models API
+  models: read          # required for accessing GitHub Models API
 
 jobs:
   test-model:
