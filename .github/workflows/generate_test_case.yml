@@ -18,7 +18,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  models: write-all
+  models: read
 
 jobs:
   generate-tests:
@@ -37,7 +37,7 @@ jobs:
         - Use Swift Testing (import Testing), not XCTest.
         - Use @MainActor on test structs that touch UIKit.
         - Place acceptance criteria under a block comment (/* ... */) with bullets prefixed by "- ".
-        - File header should mark it AUTO-GENERATED and import GHFollowers with @testable.
+        - File header should mark it AUTO-GENERATED and date time stamp and import GHFollowers with @testable.
         - Prefer one struct per generated file; name it GeneratedUserStoryTests (or Generated_<Category>_Tests if split).
         
         IMPORTANT CONSISTENCY REQUIREMENTS:
