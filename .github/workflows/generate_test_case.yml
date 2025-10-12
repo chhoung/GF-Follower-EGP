@@ -50,7 +50,6 @@ jobs:
         - Imports: import Testing, import UIKit, @testable import GHFollowers
         - @MainActor struct GeneratedUserStoryTests
         - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
-        - Use #expect() assertions, Issue.record(), RunLoop.current.run()
         - UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
         - Follower model: Follower(login: "username", avatarUrl: "")
 
