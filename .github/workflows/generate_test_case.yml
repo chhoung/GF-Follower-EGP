@@ -137,14 +137,6 @@ jobs:
           exit 1
         fi
 
-    - name: Show generated test file preview
-      if: steps.generate_tests.outputs.file_generated == 'true'
-      run: |
-        echo "📄 Generated test file preview (first 50 lines):"
-        head -50 GHFollowersTests/GeneratedUserStoryTests.swift
-        echo "==============================================="
-        wc -l GHFollowersTests/GeneratedUserStoryTests.swift
-
     - name: Commit and push generated test file
       if: steps.generate_tests.outputs.file_generated == 'true'
       run: |
