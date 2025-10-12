@@ -52,9 +52,7 @@ jobs:
         - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
         - UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
         - Follower model: Follower(login: "username", avatarUrl: "")
-
-        HINTS:
-        - expect() is used like this #expect(vc.view.backgroundColor == .systemBackground)
+        - expect(boolean), eg: #expect(viewA.title == "Hello")
 
         OUTPUT: Raw Swift code only, no markdown or explanations.
 
