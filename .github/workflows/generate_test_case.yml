@@ -19,6 +19,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Call GitHub AI model to generate/update test cases
+      id: generate_tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
