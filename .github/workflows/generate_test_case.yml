@@ -101,6 +101,9 @@ jobs:
         
         # Check if response is valid JSON
         if echo "$RAW_RESPONSE" | jq . > /dev/null 2>&1; then
+          echo "🪶 Full AI model JSON response (truncated to 2000 chars):"
+          echo "$RAW_RESPONSE" | jq . | head -c 2000
+          echo ""
           echo "✅ Valid JSON response received"
           RESPONSE=$(echo "$RAW_RESPONSE" | jq -r '.choices[0].message.content')
         else
