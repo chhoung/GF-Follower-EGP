@@ -17,13 +17,13 @@ struct GeneratedUserStoryTests {
         - User can press return key to submit search
         - App navigates to follower list screen on successful search
         */
-        
+
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
         #expect(vc.view.backgroundColor == .systemBackground)
         #expect(vc.callToActionButton.titleLabel?.text == "Get Followers")
@@ -39,13 +39,13 @@ struct GeneratedUserStoryTests {
         - Alert shows message 'Please enter a username. We need to know who to look for 😀.'
         - Alert has 'Ok' button to dismiss
         */
-        
+
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
         vc.callToActionButton.sendActions(for: .touchUpInside)
 
@@ -55,7 +55,7 @@ struct GeneratedUserStoryTests {
             Issue.record("Expected an alert to be presented")
             return
         }
-        
+
         #expect(alert.title).to(equal("Empty Username"))
         #expect(alert.message).to(equal("Please enter a username. We need to know who to look for 😀."))
     }
@@ -68,13 +68,13 @@ struct GeneratedUserStoryTests {
         - Text field loses focus
         - Keyboard animation is smooth
         */
-        
+
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
         vc.usernameTextField.becomeFirstResponder()
 
@@ -95,19 +95,19 @@ struct GeneratedUserStoryTests {
         - Previous search text is cleared
         - Text field is ready for new input
         */
-        
+
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
         vc.usernameTextField.text = "octocat"
-        
+
         vc.usernameTextField.resignFirstResponder()
         vc.viewWillAppear(false)
-        
+
         #expect(vc.usernameTextField.text).to(beEmpty())
     }
 
@@ -119,22 +119,22 @@ struct GeneratedUserStoryTests {
         - Each follower shows avatar image and username
         - Grid layout adapts to different screen sizes
         */
-        
+
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
-        
+
         vc.followers = [Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")]
         vc.collectionView.reloadData()
-        
+
         RunLoop.current.run()
 
         #expect(vc.collectionView.numberOfItems(inSection: 0)).to(equal(1))
-        
+
         let cell = vc.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? FollowerCell
         #expect(cell?.usernameLabel.text).to(equal("octocat"))
     }
@@ -148,19 +148,19 @@ struct GeneratedUserStoryTests {
         - Search is case-insensitive
         - Empty search shows all followers
         */
-        
+
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
 
         let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
         vc.followers = [follower]
         vc.collectionView.reloadData()
-        
+
         RunLoop.current.run()
 
         vc.searchController.searchBar.text = "octocat"
@@ -180,18 +180,18 @@ struct GeneratedUserStoryTests {
         - Shows 'No Followers' message
         - Shows 'This user has no followers. Go follow them!' subtitle
         */
-        
+
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
-        
+
         vc.followers = []
         vc.collectionView.reloadData()
-        
+
         RunLoop.current.run()
 
         guard vc.emptyStateView.isHidden == false else {
@@ -211,25 +211,25 @@ struct GeneratedUserStoryTests {
         - UserInfoVC shows selected user's info
         - Presentation is modal inside navigation controller
         */
-        
+
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
-        
+
         let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
         vc.followers = [follower]
         vc.collectionView.reloadData()
-        
+
         RunLoop.current.run()
 
         vc.collectionView.delegate?.collectionView?(vc.collectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
-        
+
         RunLoop.current.run()
-        
+
         guard let userInfoVC = navigationController.topViewController as? UserInfoVC else {
             Issue.record("Expected to navigate to UserInfoVC")
             return
@@ -246,18 +246,18 @@ struct GeneratedUserStoryTests {
         - Shows 'No Favorites' message
         - Shows 'Add a favorite on the follower list screen' subtitle
         */
-        
+
         let vc = FavoritesListVC()
         let navigationController = UINavigationController(rootViewController: vc)
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
+
         _ = vc.view
-        
+
         vc.favorites = []
         vc.collectionView.reloadData()
-        
+
         RunLoop.current.run()
 
         guard vc.emptyStateView.isHidden == false else {
