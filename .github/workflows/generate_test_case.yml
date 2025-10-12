@@ -45,18 +45,15 @@ jobs:
 
         Goal: Generate or update Swift tests from user stories JSON data.
 
-        Rules:
-        - Use Swift Testing (import Testing), not XCTest.
-        - Use @MainActor on test structs that touch UIKit.
-        - Place acceptance criteria under a block comment (/* ... */) with bullets prefixed by "- ".
-        - File header should mark it AUTO-GENERATED with current date/time and import GHFollowers with @testable.
-        - Prefer one struct per generated file; name it GeneratedUserStoryTests.
-
-        IMPORTANT CONSISTENCY REQUIREMENTS:
-        - Follow the exact same patterns as the existing GHFollowersTests.swift file
-        - Use the same test naming convention: test{Description}()
+        CRITICAL REQUIREMENTS:
+        - Generate a SINGLE test file named GeneratedUserStoryTests.swift
+        - Follow the EXACT structure and patterns from GHFollowersTests.swift
+        - Use the same file header format with proper copyright and date
+        - Use the same import statements: import Testing, import UIKit, @testable import GHFollowers
+        - Use @MainActor on the struct
         - Use the same comment format: // US-XXX: {Title}
         - Use the same @Test annotation format: @Test("US-XXX: {Description}")
+        - Use the same test function naming: test{Description}()
         - Use the same assertion patterns with #expect()
         - Use the same UI setup patterns (UIWindow, UINavigationController, etc.)
         - Use the same error handling patterns with Issue.record()
@@ -65,6 +62,23 @@ jobs:
         - Use the same view lifecycle triggering patterns (_ = vc.view, loadViewIfNeeded())
         - Use the same data seeding patterns for test data
         - Use the same configuration patterns for collection views and search controllers
+
+        FILE STRUCTURE REQUIREMENTS:
+        1. File header with exact format:
+           //
+           //  GeneratedUserStoryTests.swift
+           //  GHFollowersTests
+           //
+           //  AUTO-GENERATED on [current date]
+           //  Copyright © 2025 Chhorng. All rights reserved.
+           //
+        2. Import statements in exact order: import Testing, import UIKit, @testable import GHFollowers
+        3. @MainActor struct GeneratedUserStoryTests
+        4. Each test method follows the exact pattern from GHFollowersTests.swift
+        5. Use proper Follower model initialization: Follower(login: "username", avatarUrl: "")
+        6. Use proper UIWindow setup: UIWindow(frame: UIScreen.main.bounds)
+        7. Use proper RunLoop patterns: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
+        8. Generate ALL tests in a SINGLE file, not multiple separate files
 
         SPECIFIC PATTERNS TO FOLLOW:
         1. For SearchVC tests: Use UINavigationController + UIWindow setup
@@ -75,7 +89,17 @@ jobs:
         6. For gesture tests: Check gestureRecognizers array
         7. For lifecycle tests: Use viewWillAppear() and proper view setup
 
-        Generate comprehensive, working tests that match the existing codebase style exactly.
+        Generate a SINGLE comprehensive test file that matches the existing codebase style exactly.
+        
+        CRITICAL OUTPUT REQUIREMENTS:
+        - Output ONLY the raw Swift code for the GeneratedUserStoryTests.swift file
+        - Do NOT include any explanatory text like "Here is...", "Below are...", etc.
+        - Do NOT include markdown formatting, code blocks, or any other text
+        - Do NOT include any text before or after the Swift code
+        - Start directly with the file header comment (//)
+        - End directly with the closing brace of the struct
+        - The output must be compilation-ready Swift code only
+        - No additional commentary, explanations, or formatting
 
         User stories data:
         EOF
@@ -89,6 +113,11 @@ jobs:
           echo "Existing test file (update this with new patterns):" >> prompt.txt
           cat GHFollowersTests/GeneratedUserStoryTests.swift >> prompt.txt
         fi
+        
+        # Add reference to the existing GHFollowersTests.swift for pattern matching
+        echo "" >> prompt.txt
+        echo "Reference file (GHFollowersTests.swift) for exact pattern matching:" >> prompt.txt
+        cat GHFollowersTests/GHFollowersTests.swift >> prompt.txt
         
         # Read the complete prompt
         PROMPT=$(cat prompt.txt)
@@ -124,14 +153,25 @@ jobs:
 
         # Create output directory and save generated file
         mkdir -p GHFollowersTests
-        echo "$RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
+        
+        # Clean up any markdown formatting that might be in the response
+        CLEAN_RESPONSE=$(echo "$RESPONSE" | sed 's/```swift//g' | sed 's/```//g' | sed '/^Below are the generated Swift test files/d' | sed '/^### Generated.*Tests\.swift/d' | sed '/^```swift/d' | sed '/^```$/d')
+        
+        echo "$CLEAN_RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
 
         # Clean up temporary files
         rm -f prompt.txt
 
         if [ -f GHFollowersTests/GeneratedUserStoryTests.swift ] && [ -s GHFollowersTests/GeneratedUserStoryTests.swift ]; then
-          echo "✅ Test file generated/updated successfully"
-          echo "file_generated=true" >> $GITHUB_OUTPUT
+          # Validate that the file starts with proper Swift file header
+          if head -n 1 GHFollowersTests/GeneratedUserStoryTests.swift | grep -q "^//"; then
+            echo "✅ Test file generated/updated successfully with proper Swift header"
+            echo "file_generated=true" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Test file generated but doesn't have proper Swift file header"
+            echo "file_generated=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
         else
           echo "❌ Test file generation failed - file is empty or doesn't exist"
           echo "file_generated=false" >> $GITHUB_OUTPUT

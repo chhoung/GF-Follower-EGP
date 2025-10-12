@@ -9,71 +9,75 @@
                 {
                     "id": "US-001",
                     "title": "Search for GitHub User",
-                    "description": "As a user, I want to search for a GitHub user by entering their username so I can explore their profile and followers.",
+                    "screen": "SearchVC",
+                    "ui_elements": [
+                        "usernameTextField",
+                        "callToActionButton"
+                    ],
+                    "priority": "high",
+                    "test_type": "ui_automation",
+                    "test_function": "testSearchVCBasicWiring",
+                    "test_description": "Verifies SearchVC loads correctly and has expected button and placeholder text.",
                     "acceptance_criteria": [
                         "User can enter a username in the text field",
                         "User can tap 'Get Followers' button to search",
                         "User can press return key to submit search",
                         "App navigates to follower list screen on successful search"
-                    ],
-                    "ui_elements": [
-                        "usernameTextField",
-                        "callToActionButton"
-                    ],
-                    "screen": "SearchVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
+                    ]
                 },
                 {
                     "id": "US-002",
                     "title": "Handle Empty Username Search",
-                    "description": "As a user, I want to see a validation message when I try to search without entering a username so I know what to do.",
+                    "screen": "SearchVC",
+                    "ui_elements": [
+                        "callToActionButton",
+                        "alert"
+                    ],
+                    "priority": "high",
+                    "test_type": "ui_automation",
+                    "test_function": "testEmptyUsernamePresentsAlert",
+                    "test_description": "Verifies custom GFAlertVC appears when user tries to search without a username.",
                     "acceptance_criteria": [
                         "Alert appears when 'Get Followers' is tapped with empty text field",
                         "Alert shows title 'Empty Username'",
                         "Alert shows message 'Please enter a username. We need to know who to look for 😀.'",
                         "Alert has 'Ok' button to dismiss"
-                    ],
-                    "ui_elements": [
-                        "callToActionButton",
-                        "alert"
-                    ],
-                    "screen": "SearchVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
+                    ]
                 },
                 {
                     "id": "US-003",
                     "title": "Dismiss Keyboard",
-                    "description": "As a user, I want to dismiss the keyboard by tapping outside the text field for better user experience.",
-                    "acceptance_criteria": [
-                        "Keyboard dismisses when user taps outside text field",
-                        "Text field loses focus",
-                        "Keyboard animation is smooth"
-                    ],
+                    "screen": "SearchVC",
                     "ui_elements": [
                         "usernameTextField",
                         "view"
                     ],
-                    "screen": "SearchVC",
                     "priority": "medium",
-                    "test_type": "ui_automation"
+                    "test_type": "ui_automation",
+                    "test_function": "testDismissKeyboardGestureExists",
+                    "test_description": "Ensures tap gesture recognizer exists to dismiss keyboard.",
+                    "acceptance_criteria": [
+                        "Keyboard dismisses when user taps outside text field",
+                        "Text field loses focus",
+                        "Keyboard animation is smooth"
+                    ]
                 },
                 {
                     "id": "US-004",
                     "title": "Clear Text Field on Return",
-                    "description": "As a user, I want the text field to be cleared when I return to the search screen so I can start fresh.",
+                    "screen": "SearchVC",
+                    "ui_elements": [
+                        "usernameTextField"
+                    ],
+                    "priority": "medium",
+                    "test_type": "ui_automation",
+                    "test_function": "testTextFieldClearedOnAppear",
+                    "test_description": "Verifies username field is cleared when returning to SearchVC.",
                     "acceptance_criteria": [
                         "Text field is empty when returning to SearchVC",
                         "Previous search text is cleared",
                         "Text field is ready for new input"
-                    ],
-                    "ui_elements": [
-                        "usernameTextField"
-                    ],
-                    "screen": "SearchVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
+                    ]
                 }
             ]
         },
@@ -83,70 +87,74 @@
                 {
                     "id": "US-005",
                     "title": "View Followers in Grid",
-                    "description": "As a user, I want to see a user's followers displayed in a grid layout so I can browse them visually.",
-                    "acceptance_criteria": [
-                        "Followers are displayed in a 3-column grid",
-                        "Each follower shows avatar image and username",
-                        "Grid layout adapts to different screen sizes"
-                    ],
+                    "screen": "FollowerListVC",
                     "ui_elements": [
                         "collectionView",
                         "FollowerCell"
                     ],
-                    "screen": "FollowerListVC",
                     "priority": "high",
-                    "test_type": "ui_automation"
+                    "test_type": "ui_automation",
+                    "test_function": "testFollowerListGridSetup",
+                    "test_description": "Validates follower list collectionView grid setup and 3-column layout sizing.",
+                    "acceptance_criteria": [
+                        "Followers are displayed in a 3-column grid",
+                        "Each follower shows avatar image and username",
+                        "Grid layout adapts to different screen sizes"
+                    ]
                 },
                 {
                     "id": "US-006",
                     "title": "Search Through Followers",
-                    "description": "As a user, I want to search through the current followers by username so I can find specific people.",
+                    "screen": "FollowerListVC",
+                    "ui_elements": [
+                        "searchController",
+                        "searchBar"
+                    ],
+                    "priority": "high",
+                    "test_type": "ui_automation",
+                    "test_function": "testSearchFiltersFollowers",
+                    "test_description": "Verifies follower list filters search results case-insensitively in real time.",
                     "acceptance_criteria": [
                         "Search bar appears in navigation",
                         "Search filters followers in real-time",
                         "Search is case-insensitive",
                         "Empty search shows all followers"
-                    ],
-                    "ui_elements": [
-                        "searchController",
-                        "searchBar"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "high",
-                    "test_type": "ui_automation"
+                    ]
                 },
                 {
                     "id": "US-007",
                     "title": "Empty State for No Followers",
-                    "description": "As a user, I want to see a helpful message when a user has no followers so I understand the situation.",
+                    "screen": "FollowerListVC",
+                    "ui_elements": [
+                        "emptyStateView"
+                    ],
+                    "priority": "medium",
+                    "test_type": "ui_automation",
+                    "test_function": "testEmptyStateForNoFollowers",
+                    "test_description": "Ensures empty state view appears with correct text when user has no followers.",
                     "acceptance_criteria": [
                         "Empty state view appears when no followers",
                         "Shows 'No Followers' message",
                         "Shows 'This user has no followers. Go follow them!' subtitle"
-                    ],
-                    "ui_elements": [
-                        "emptyStateView"
-                    ],
-                    "screen": "FollowerListVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
+                    ]
                 },
                 {
                     "id": "US-008",
                     "title": "Selecting Follower Opens User Info",
-                    "description": "As a user, I want to tap on a follower to see their detailed profile so I can learn more about them.",
-                    "acceptance_criteria": [
-                        "Tapping follower cell presents UserInfoVC",
-                        "UserInfoVC shows selected user's info",
-                        "Presentation is modal inside navigation controller"
-                    ],
+                    "screen": "FollowerListVC -> UserInfoVC",
                     "ui_elements": [
                         "collectionView",
                         "UserInfoVC"
                     ],
-                    "screen": "FollowerListVC -> UserInfoVC",
                     "priority": "high",
-                    "test_type": "ui_automation"
+                    "test_type": "ui_automation",
+                    "test_function": "testSelectingFollowerPresentsUserInfoVC",
+                    "test_description": "Verifies selecting follower presents UserInfoVC modally inside navigation controller.",
+                    "acceptance_criteria": [
+                        "Tapping follower cell presents UserInfoVC",
+                        "UserInfoVC shows selected user's info",
+                        "Presentation is modal inside navigation controller"
+                    ]
                 }
             ]
         },
@@ -156,18 +164,19 @@
                 {
                     "id": "US-009",
                     "title": "Empty Favorites State",
-                    "description": "As a user, I want to see a helpful message when I have no favorites yet so I know what to do.",
+                    "screen": "FavoritesListVC",
+                    "ui_elements": [
+                        "emptyStateView"
+                    ],
+                    "priority": "medium",
+                    "test_type": "ui_automation",
+                    "test_function": "testEmptyFavoritesState",
+                    "test_description": "Ensures empty favorites view is displayed with proper title and subtitle.",
                     "acceptance_criteria": [
                         "Empty state view appears when no favorites",
                         "Shows 'No Favorites' message",
                         "Shows 'Add a favorite on the follower list screen' subtitle"
-                    ],
-                    "ui_elements": [
-                        "emptyStateView"
-                    ],
-                    "screen": "FavoritesListVC",
-                    "priority": "medium",
-                    "test_type": "ui_automation"
+                    ]
                 }
             ]
         }
