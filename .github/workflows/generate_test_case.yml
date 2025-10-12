@@ -41,18 +41,35 @@ jobs:
         
         # Create the prompt for updating/creating test cases
         cat > prompt.txt << 'EOF'
-        Generate Swift tests for GHFollowers iOS app from user stories.
+        Generate Swift Testing framework tests for GHFollowers UIKit iOS app.
 
-        REQUIREMENTS:
+        PROJECT CONTEXT:
+        - UIKit iOS app for GitHub follower management
+        - Main screens: SearchVC, FollowerListVC, UserInfoVC, FavoritesListVC
+        - Uses Swift Testing framework (import Testing), NOT XCTest
+        - Custom UI components: GFButton, GFTextField, GFAvatarImageView, etc.
+        - Models: Follower(login: String, avatarUrl: String), User
+
+        TEST REQUIREMENTS:
         - Single file: GeneratedUserStoryTests.swift
-        - Follow GHFollowersTests.swift patterns exactly
         - File header: // GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Kimchhorng Pheng
         - Imports: import Testing, import UIKit, @testable import GHFollowers
         - @MainActor struct GeneratedUserStoryTests
         - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
+        - Assertions: #expect(condition), #expect(value == expected)
+        - Error handling: Issue.record("message")
+        - Async: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
         - UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
-        - Follower model: Follower(login: "username", avatarUrl: "")
-        - expect(boolean), eg: #expect(viewA.title == "Hello")
+        - View lifecycle: _ = vc.view, vc.loadViewIfNeeded()
+        - Data: Follower(login: "username", avatarUrl: "")
+
+        COMMON PATTERNS:
+        - SearchVC: UINavigationController + UIWindow setup, text field validation
+        - FollowerListVC: Collection view setup, data source configuration, search filtering
+        - UserInfoVC: Modal presentation, navigation controller
+        - Empty states: UIContentUnavailableConfiguration assertions
+        - Gestures: Check gestureRecognizers array
+        - Lifecycle: viewWillAppear(), viewDidLoad() triggers
 
         OUTPUT: Raw Swift code only, no markdown or explanations.
 
