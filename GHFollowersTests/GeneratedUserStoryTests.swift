@@ -51,13 +51,14 @@ struct GeneratedUserStoryTests {
 
         RunLoop.current.run()
 
-        guard let alert = vc.presentedViewController as? UIAlertController else {
-            Issue.record("Expected an alert to be presented")
+        guard let alert = vc.presentedViewController as? GFAlertVC else {
+            Issue.record("Expected a GFAlertVC to be presented")
             return
         }
 
-        #expect(alert.title).to(equal("Empty Username"))
-        #expect(alert.message).to(equal("Please enter a username. We need to know who to look for 😀."))
+        #expect(alert.titleLabel.text).to(equal("Empty Username"))
+        #expect(alert.messageLabel.text).to(equal("Please enter a username. We need to know who to look for 😀."))
+        #expect(alert.actionButton.titleLabel?.text).to(equal("Ok"))
     }
 
     // US-003: Dismiss Keyboard
