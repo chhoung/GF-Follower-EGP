@@ -1,13 +1,9 @@
-Below are the generated Swift test files for the provided user stories, following all the specified patterns and requirements.
 
-### GeneratedUserStoryTests.swift (for US-001)
-```swift
-// Filename: GeneratedUserStoryTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
+// GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Allen
 
-import GHFollowers @testable
 import Testing
+import UIKit
+@testable import GHFollowers
 
 @MainActor
 struct GeneratedUserStoryTests {
@@ -24,7 +20,7 @@ struct GeneratedUserStoryTests {
         
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
@@ -34,7 +30,6 @@ struct GeneratedUserStoryTests {
 
         RunLoop.current.run()
 
-        // Validate navigation to follower list screen
         guard let followerListVC = navigationController.topViewController as? FollowerListVC else {
             Issue.record("Expected to navigate to FollowerListVC")
             return
@@ -42,20 +37,6 @@ struct GeneratedUserStoryTests {
         
         #expect(followerListVC.isMovingToParentViewController).to(beTrue())
     }
-}
-```
-
-### GeneratedHandleEmptyUsernameSearchTests.swift (for US-002)
-```swift
-// Filename: GeneratedHandleEmptyUsernameSearchTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedHandleEmptyUsernameSearchTests {
 
     // US-002: Handle Empty Username Search
     @Test("US-002: Handle Empty Username Search")
@@ -69,7 +50,7 @@ struct GeneratedHandleEmptyUsernameSearchTests {
         
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
@@ -86,20 +67,6 @@ struct GeneratedHandleEmptyUsernameSearchTests {
         #expect(alert.title).to(equal("Empty Username"))
         #expect(alert.message).to(equal("Please enter a username. We need to know who to look for 😀."))
     }
-}
-```
-
-### GeneratedDismissKeyboardTests.swift (for US-003)
-```swift
-// Filename: GeneratedDismissKeyboardTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedDismissKeyboardTests {
 
     // US-003: Dismiss Keyboard
     @Test("US-003: Dismiss Keyboard")
@@ -112,7 +79,7 @@ struct GeneratedDismissKeyboardTests {
         
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
@@ -121,27 +88,12 @@ struct GeneratedDismissKeyboardTests {
 
         RunLoop.current.run()
 
-        // Simulate tap outside the text field
         vc.view.sendActions(for: .touchUpInside)
 
         RunLoop.current.run()
 
         #expect(vc.usernameTextField.isFirstResponder).to(beFalse())
     }
-}
-```
-
-### GeneratedClearTextFieldOnReturnTests.swift (for US-004)
-```swift
-// Filename: GeneratedClearTextFieldOnReturnTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedClearTextFieldOnReturnTests {
 
     // US-004: Clear Text Field on Return
     @Test("US-004: Clear Text Field on Return")
@@ -154,33 +106,18 @@ struct GeneratedClearTextFieldOnReturnTests {
         
         let vc = SearchVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
         vc.usernameTextField.text = "octocat"
         
-        // Simulate going back to SearchVC
         vc.usernameTextField.resignFirstResponder()
         vc.viewWillAppear(false)
         
         #expect(vc.usernameTextField.text).to(beEmpty())
     }
-}
-```
-
-### GeneratedViewFollowersInGridTests.swift (for US-005)
-```swift
-// Filename: GeneratedViewFollowersInGridTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedViewFollowersInGridTests {
 
     // US-005: View Followers in Grid
     @Test("US-005: View Followers in Grid")
@@ -193,14 +130,13 @@ struct GeneratedViewFollowersInGridTests {
         
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
         
-        // Seed with data
-        vc.followers = [Follower(username: "octocat", avatarUrl: "http://example.com/avatar.png")] // Mock data
+        vc.followers = [Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")]
         vc.collectionView.reloadData()
         
         RunLoop.current.run()
@@ -210,20 +146,6 @@ struct GeneratedViewFollowersInGridTests {
         let cell = vc.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? FollowerCell
         #expect(cell?.usernameLabel.text).to(equal("octocat"))
     }
-}
-```
-
-### GeneratedSearchThroughFollowersTests.swift (for US-006)
-```swift
-// Filename: GeneratedSearchThroughFollowersTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedSearchThroughFollowersTests {
 
     // US-006: Search Through Followers
     @Test("US-006: Search Through Followers")
@@ -237,20 +159,18 @@ struct GeneratedSearchThroughFollowersTests {
         
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
 
-        // Seed with data
-        let follower = Follower(username: "octocat", avatarUrl: "http://example.com/avatar.png")
+        let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
         vc.followers = [follower]
         vc.collectionView.reloadData()
         
         RunLoop.current.run()
 
-        // Simulate searching
         vc.searchController.searchBar.text = "octocat"
         vc.searchController.searchBar.sendActions(for: .valueChanged)
 
@@ -259,20 +179,6 @@ struct GeneratedSearchThroughFollowersTests {
         #expect(vc.filteredFollowers.count).to(equal(1))
         #expect(vc.collectionView.numberOfItems(inSection: 0)).to(equal(1))
     }
-}
-```
-
-### GeneratedEmptyStateForNoFollowersTests.swift (for US-007)
-```swift
-// Filename: GeneratedEmptyStateForNoFollowersTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedEmptyStateForNoFollowersTests {
 
     // US-007: Empty State for No Followers
     @Test("US-007: Empty State for No Followers")
@@ -285,13 +191,12 @@ struct GeneratedEmptyStateForNoFollowersTests {
         
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
         
-        // Simulate no followers
         vc.followers = []
         vc.collectionView.reloadData()
         
@@ -305,20 +210,6 @@ struct GeneratedEmptyStateForNoFollowersTests {
         #expect(vc.emptyStateView.messageLabel.text).to(equal("No Followers"))
         #expect(vc.emptyStateView.subtitleLabel.text).to(equal("This user has no followers. Go follow them!"))
     }
-}
-```
-
-### GeneratedSelectingFollowerOpensUserInfoTests.swift (for US-008)
-```swift
-// Filename: GeneratedSelectingFollowerOpensUserInfoTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedSelectingFollowerOpensUserInfoTests {
 
     // US-008: Selecting Follower Opens User Info
     @Test("US-008: Selecting Follower Opens User Info")
@@ -331,20 +222,18 @@ struct GeneratedSelectingFollowerOpensUserInfoTests {
         
         let vc = FollowerListVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
         
-        // Seed with data
-        let follower = Follower(username: "octocat", avatarUrl: "http://example.com/avatar.png")
+        let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
         vc.followers = [follower]
         vc.collectionView.reloadData()
         
         RunLoop.current.run()
 
-        // Simulate tapping on a follower
         vc.collectionView.delegate?.collectionView?(vc.collectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
         
         RunLoop.current.run()
@@ -356,20 +245,6 @@ struct GeneratedSelectingFollowerOpensUserInfoTests {
 
         #expect(userInfoVC.usernameLabel.text).to(equal("octocat"))
     }
-}
-```
-
-### GeneratedEmptyFavoritesStateTests.swift (for US-009)
-```swift
-// Filename: GeneratedEmptyFavoritesStateTests.swift
-// Author: AUTO-GENERATED
-// Date: 2025-10-11
-
-import GHFollowers @testable
-import Testing
-
-@MainActor
-struct GeneratedEmptyFavoritesStateTests {
 
     // US-009: Empty Favorites State
     @Test("US-009: Empty Favorites State")
@@ -382,13 +257,12 @@ struct GeneratedEmptyFavoritesStateTests {
         
         let vc = FavoritesListVC()
         let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow()
+        let window = UIWindow(frame: UIScreen.main.bounds)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
         
         _ = vc.view
         
-        // Simulate no favorites
         vc.favorites = []
         vc.collectionView.reloadData()
         
@@ -403,6 +277,3 @@ struct GeneratedEmptyFavoritesStateTests {
         #expect(vc.emptyStateView.subtitleLabel.text).to(equal("Add a favorite on the follower list screen"))
     }
 }
-```
-
-These tests cover the user stories provided, ensuring they follow the established patterns in the existing `GHFollowersTests.swift` file. Each test file corresponds to a specific user story and checks the associated acceptance criteria.
