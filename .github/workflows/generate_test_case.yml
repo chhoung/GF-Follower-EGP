@@ -1,24 +1,22 @@
-name: Generate Test Cases from User Stories
+name: Generate Test Cases
 
-on: 
-  workflow_dispatch: # allows manual triggering
+on:
+  workflow_dispatch:
   push:
     branches:
       - develop
 
 permissions:
-  contents: write       # allow committing generated file
-  models: read          # required for accessing GitHub Models API
+  contents: write
+  models: read
 
 jobs:
   generate-tests:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: Call GitHub AI model to generate/update test cases
+    - name: Generate Tests
       id: generate_tests
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -28,161 +26,51 @@ jobs:
           exit 1
         fi
 
-        echo "🧠 Generating/updating test cases via GitHub Model..."
-        
-        # Read user stories
         STORIES=$(cat user_stories_database.json)
-        
-        # Read existing test file if it exists
         EXISTING_TESTS=""
-        if [ -f "GHFollowersTests/GeneratedUserStoryTests.swift" ]; then
-          EXISTING_TESTS=$(cat GHFollowersTests/GeneratedUserStoryTests.swift)
-        fi
-        
-        # Create the prompt for updating/creating test cases
+        [ -f "GHFollowersTests/GeneratedUserStoryTests.swift" ] && EXISTING_TESTS=$(cat GHFollowersTests/GeneratedUserStoryTests.swift)
+
         cat > prompt.txt << 'EOF'
-        You are an AI coding assistant for the GHFollowers iOS app (Swift, Swift Testing).
-
-        Goal: Generate or update Swift tests from user stories JSON data.
-
-        CRITICAL REQUIREMENTS:
-        - Generate a SINGLE test file named GeneratedUserStoryTests.swift
-        - Follow the EXACT structure and patterns from GHFollowersTests.swift
-        - Use the same file header format with proper copyright and date
-        - Use the same import statements: import Testing, import UIKit, @testable import GHFollowers
-        - Use @MainActor on the struct
-        - Use the same comment format: // US-XXX: {Title}
-        - Use the same @Test annotation format: @Test("US-XXX: {Description}")
-        - Use the same test function naming: test{Description}()
-        - Use the same assertion patterns with #expect()
-        - Use the same UI setup patterns (UIWindow, UINavigationController, etc.)
-        - Use the same error handling patterns with Issue.record()
-        - Use the same RunLoop.current.run() patterns for async operations
-        - Use the same guard statements and optional binding patterns
-        - Use the same view lifecycle triggering patterns (_ = vc.view, loadViewIfNeeded())
-        - Use the same data seeding patterns for test data
-        - Use the same configuration patterns for collection views and search controllers
-
-        FILE STRUCTURE REQUIREMENTS:
-        1. File header with exact format:
-           //
-           //  GeneratedUserStoryTests.swift
-           //  GHFollowersTests
-           //
-           //  AUTO-GENERATED on [current date]
-           //  Copyright © 2025 Chhorng. All rights reserved.
-           //
-        2. Import statements in exact order: import Testing, import UIKit, @testable import GHFollowers
-        3. @MainActor struct GeneratedUserStoryTests
-        4. Each test method follows the exact pattern from GHFollowersTests.swift
-        5. Use proper Follower model initialization: Follower(login: "username", avatarUrl: "")
-        6. Use proper UIWindow setup: UIWindow(frame: UIScreen.main.bounds)
-        7. Use proper RunLoop patterns: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
-        8. Generate ALL tests in a SINGLE file, not multiple separate files
-
-        SPECIFIC PATTERNS TO FOLLOW:
-        1. For SearchVC tests: Use UINavigationController + UIWindow setup
-        2. For FollowerListVC tests: Use proper data seeding and configuration
-        3. For UserInfoVC tests: Use modal presentation with navigation controller
-        4. For empty state tests: Use UIContentUnavailableConfiguration assertions
-        5. For search tests: Use UISearchController with proper filtering
-        6. For gesture tests: Check gestureRecognizers array
-        7. For lifecycle tests: Use viewWillAppear() and proper view setup
-
-        Generate a SINGLE comprehensive test file that matches the existing codebase style exactly.
-        
-        CRITICAL OUTPUT REQUIREMENTS:
-        - Output ONLY the raw Swift code for the GeneratedUserStoryTests.swift file
-        - Do NOT include any explanatory text like "Here is...", "Below are...", etc.
-        - Do NOT include markdown formatting, code blocks, or any other text
-        - Do NOT include any text before or after the Swift code
-        - Start directly with the file header comment (//)
-        - End directly with the closing brace of the struct
-        - The output must be compilation-ready Swift code only
-        - No additional commentary, explanations, or formatting
-
-        User stories data:
+        Generate a single Swift test file GeneratedUserStoryTests.swift for GHFollowers iOS app using Swift Testing.
+        Match exact structure/patterns from GHFollowersTests.swift.
+        Requirements:
+        - File header: // GeneratedUserStoryTests.swift\n// GHFollowersTests\n// AUTO-GENERATED on $(date +%Y-%m-%d)\n// Copyright © 2025 Chhorng. All rights reserved.
+        - Imports: Testing, UIKit, @testable GHFollowers
+        - Use @MainActor, @Test annotations
+        - Match comment format, assertion patterns, UI setup
+        - Output only raw Swift code
+        User stories:
         EOF
-        
-        # Append user stories to prompt
         cat user_stories_database.json >> prompt.txt
-        
-        # Append existing tests if they exist
-        if [ -f "GHFollowersTests/GeneratedUserStoryTests.swift" ]; then
-          echo "" >> prompt.txt
-          echo "Existing test file (update this with new patterns):" >> prompt.txt
-          cat GHFollowersTests/GeneratedUserStoryTests.swift >> prompt.txt
-        fi
-        
-        # Add reference to the existing GHFollowersTests.swift for pattern matching
-        echo "" >> prompt.txt
-        echo "Reference file (GHFollowersTests.swift) for exact pattern matching:" >> prompt.txt
-        cat GHFollowersTests/GHFollowersTests.swift >> prompt.txt
-        
-        # Read the complete prompt
-        PROMPT=$(cat prompt.txt)
+        [ -f "GHFollowersTests/GeneratedUserStoryTests.swift" ] && echo "\nExisting tests:\n$(cat GHFollowersTests/GeneratedUserStoryTests.swift)" >> prompt.txt
+        echo "\nReference patterns:\n$(cat GHFollowersTests/GHFollowersTests.swift)" >> prompt.txt
 
-        # Call GitHub AI model using the same format as test_open_api.yml
-        echo "🔍 Calling GitHub AI model..."
-        
-        # Escape the prompt for JSON
+        PROMPT=$(cat prompt.txt)
         ESCAPED_PROMPT=$(echo "$PROMPT" | jq -Rs .)
-        
         RAW_RESPONSE=$(curl -s "https://models.github.ai/inference/chat/completions" \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
-          -d "{
-            \"model\": \"openai/gpt-4o-mini\",
-            \"messages\": [
-              {\"role\": \"user\", \"content\": $ESCAPED_PROMPT}
-            ]
-          }")
-        
-        echo "🔍 Raw response (first 200 chars):"
-        echo "$RAW_RESPONSE" | head -c 200
-        echo ""
-        
-        # Check if response is valid JSON
-        if echo "$RAW_RESPONSE" | jq . > /dev/null 2>&1; then
-          echo "✅ Valid JSON response received"
-          RESPONSE=$(echo "$RAW_RESPONSE" | jq -r '.choices[0].message.content')
-        else
-          echo "❌ Invalid JSON response, using raw response as fallback"
-          RESPONSE="$RAW_RESPONSE"
-        fi
+          -d "{\"model\": \"openai/gpt-4o-mini\", \"messages\": [{\"role\": \"user\", \"content\": $ESCAPED_PROMPT}]}")
 
-        # Create output directory and save generated file
+        RESPONSE=$(echo "$RAW_RESPONSE" | jq -r '.choices[0].message.content' 2>/dev/null || echo "$RAW_RESPONSE")
         mkdir -p GHFollowersTests
-        
-        # Clean up any markdown formatting that might be in the response
-        CLEAN_RESPONSE=$(echo "$RESPONSE" | sed 's/```swift//g' | sed 's/```//g' | sed '/^Below are the generated Swift test files/d' | sed '/^### Generated.*Tests\.swift/d' | sed '/^```swift/d' | sed '/^```$/d')
-        
-        echo "$CLEAN_RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
-
-        # Clean up temporary files
+        echo "$RESPONSE" | sed 's/```swift//g; s/```//g; /^Here is/d; /^Below is/d; /^Generated.*test files/d' > GHFollowersTests/GeneratedUserStoryTests.swift
         rm -f prompt.txt
 
-        if [ -f GHFollowersTests/GeneratedUserStoryTests.swift ] && [ -s GHFollowersTests/GeneratedUserStoryTests.swift ]; then
-          # Validate that the file starts with proper Swift file header
-          if head -n 1 GHFollowersTests/GeneratedUserStoryTests.swift | grep -q "^//"; then
-            echo "✅ Test file generated/updated successfully with proper Swift header"
-            echo "file_generated=true" >> $GITHUB_OUTPUT
-          else
-            echo "❌ Test file generated but doesn't have proper Swift file header"
-            echo "file_generated=false" >> $GITHUB_OUTPUT
-            exit 1
-          fi
+        if [ -s GHFollowersTests/GeneratedUserStoryTests.swift ] && head -n 1 GHFollowersTests/GeneratedUserStoryTests.swift | grep -q "^//"; then
+          echo "✅ Test file generated"
+          echo "file_generated=true" >> $GITHUB_OUTPUT
         else
-          echo "❌ Test file generation failed - file is empty or doesn't exist"
+          echo "❌ Test file generation failed"
           echo "file_generated=false" >> $GITHUB_OUTPUT
           exit 1
         fi
 
-    - name: Commit and push generated test file
+    - name: Commit Changes
       if: steps.generate_tests.outputs.file_generated == 'true'
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git add GHFollowersTests/GeneratedUserStoryTests.swift
-        git commit -m "Update GeneratedUserStoryTests with latest user stories" || echo "No changes to commit"
+        git commit -m "Update GeneratedUserStoryTests" || echo "No changes"
         git push
