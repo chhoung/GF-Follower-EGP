@@ -41,40 +41,47 @@ jobs:
         
         # Create the prompt for updating/creating test cases
         cat > prompt.txt << 'EOF'
-        Generate Swift Testing framework tests for GHFollowers UIKit iOS app.
+Generate Swift Testing framework tests for GHFollowers UIKit iOS app.
 
-        PROJECT CONTEXT:
-        - UIKit iOS app for GitHub follower management
-        - Main screens: SearchVC, FollowerListVC, UserInfoVC, FavoritesListVC
-        - Uses Swift Testing framework (import Testing), NOT XCTest
-        - Custom UI components: GFButton, GFTextField, GFAvatarImageView, etc.
-        - Models: Follower(login: String, avatarUrl: String), User
+PROJECT CONTEXT:
+- UIKit iOS app for GitHub follower management
+- Main screens: SearchVC, FollowerListVC, UserInfoVC, FavoritesListVC
+- Uses Swift Testing framework (import Testing), NOT XCTest
+- Custom UI components: GFButton, GFTextField, GFAvatarImageView, etc.
+- Models: Follower(login: String, avatarUrl: String), User
 
-        TEST REQUIREMENTS:
-        - Single file: GeneratedUserStoryTests.swift
-        - File header: // GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Kimchhorng Pheng
-        - Imports: import Testing, import UIKit, @testable import GHFollowers
-        - @MainActor struct GeneratedUserStoryTests
-        - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
-        - Assertions: #expect(condition), #expect(value == expected)
-        - Error handling: Issue.record("message")
-        - Async: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
-        - UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
-        - View lifecycle: _ = vc.view, vc.loadViewIfNeeded()
-        - Data: Follower(login: "username", avatarUrl: "")
+TEST REQUIREMENTS:
+- Single file: GeneratedUserStoryTests.swift
+- File header: // GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Kimchhorng Pheng
+- Imports: import Testing, import UIKit, @testable import GHFollowers
+- @MainActor struct GeneratedUserStoryTests
+- Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
+- Assertions: Only use #expect(condition) style.
+             Examples: #expect(alert.titleLabel.text == "Empty Username")
+             Do NOT use #expect(value).to(equal(...)) or any XCTest/Quick syntax.
+- Error handling: Issue.record("message")
+- Async: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
+- UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
+- View lifecycle: _ = vc.view, vc.loadViewIfNeeded()
+- Data: Follower(login: "username", avatarUrl: "")
 
-        COMMON PATTERNS:
-        - SearchVC: UINavigationController + UIWindow setup, text field validation
-        - FollowerListVC: Collection view setup, data source configuration, search filtering
-        - UserInfoVC: Modal presentation, navigation controller
-        - Empty states: UIContentUnavailableConfiguration assertions
-        - Gestures: Check gestureRecognizers array
-        - Lifecycle: viewWillAppear(), viewDidLoad() triggers
+IMPORTANT:
+- Only use #expect(condition) for assertions.
+- Rewrite any old .to(equal(...)) patterns to #expect(value == expected)
+- Always ensure assertions follow #expect(value == expected) format.
 
-        OUTPUT: Raw Swift code only, no markdown or explanations.
+COMMON PATTERNS:
+- SearchVC: UINavigationController + UIWindow setup, text field validation
+- FollowerListVC: Collection view setup, data source configuration, search filtering
+- UserInfoVC: Modal presentation, navigation controller
+- Empty states: UIContentUnavailableConfiguration assertions
+- Gestures: Check gestureRecognizers array
+- Lifecycle: viewWillAppear(), viewDidLoad() triggers
 
-        User stories:
-        EOF
+OUTPUT: Raw Swift code only, no markdown or explanations.
+
+User stories:
+EOF
         
         # Append user stories to prompt
         cat user_stories_database.json >> prompt.txt
@@ -86,7 +93,7 @@ jobs:
           cat GHFollowersTests/GeneratedUserStoryTests.swift >> prompt.txt
         fi
         
-        # Add reference to the existing GHFollowersTests.swift for pattern matching
+        # Add reference to the existing GHFollowersTests.swift for exact pattern matching
         echo "" >> prompt.txt
         echo "Reference file (GHFollowersTests.swift) for exact pattern matching:" >> prompt.txt
         cat GHFollowersTests/GHFollowersTests.swift >> prompt.txt
