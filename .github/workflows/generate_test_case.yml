@@ -46,7 +46,7 @@ jobs:
         REQUIREMENTS:
         - Single file: GeneratedUserStoryTests.swift
         - Follow GHFollowersTests.swift patterns exactly
-        - File header: // GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Allen
+        - File header: // GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Kimchhorng Pheng
         - Imports: import Testing, import UIKit, @testable import GHFollowers
         - @MainActor struct GeneratedUserStoryTests
         - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
@@ -118,6 +118,7 @@ jobs:
 
         if [ -f GHFollowersTests/GeneratedUserStoryTests.swift ] && [ -s GHFollowersTests/GeneratedUserStoryTests.swift ]; then
           echo "✅ Test file generated/updated successfully"
+          echo "$GITHUB_OUTPUT"
           echo "file_generated=true" >> $GITHUB_OUTPUT
         else
           echo "❌ Test file generation failed - file is empty or doesn't exist"
