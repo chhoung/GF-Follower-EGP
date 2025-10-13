@@ -19,7 +19,6 @@ struct GeneratedUserStoryTests {
     }
 
     // US-002: Handle Empty Username Search
-    // We verify the guard condition path by calling pushFollowerListVC with empty text.
     @Test("US-002: Empty username presents custom alert VC")
     func testEmptyUsernamePresentsAlert() throws {
         let root = UINavigationController(rootViewController: SearchVC())
@@ -47,7 +46,7 @@ struct GeneratedUserStoryTests {
         }
     }
 
-    // US-003: Dismiss Keyboard by tapping outside
+    // US-003: Dismiss Keyboard
     @Test("US-003: Dismiss keyboard tap gesture exists")
     func testDismissKeyboardGestureExists() throws {
         let vc = SearchVC()
@@ -57,7 +56,7 @@ struct GeneratedUserStoryTests {
         #expect(hasTap)
     }
 
-    // US-004: Clear Text Field on Return to SearchVC
+    // US-004: Clear Text Field on Return
     @Test("US-004: Text field cleared in viewWillAppear")
     func testTextFieldClearedOnAppear() throws {
         let nav = UINavigationController(rootViewController: UIViewController())
@@ -89,7 +88,7 @@ struct GeneratedUserStoryTests {
         }
     }
 
-    // US-006: Search Through Followers filters results (case-insensitive)
+    // US-006: Search Through Followers
     @Test("US-006: Search filters followers in real-time")
     func testSearchFiltersFollowers() throws {
         let vc = FollowerListVC(username: "octocat")
@@ -112,7 +111,7 @@ struct GeneratedUserStoryTests {
         #expect(vc.filteredFollowers.first?.login == "bob")
     }
 
-    // US-007: Empty State for No Followers shows appropriate configuration
+    // US-007: Empty State for No Followers
     @Test("US-007: Empty state shown when no followers")
     func testEmptyStateForNoFollowers() throws {
         let vc = FollowerListVC(username: "someone")
@@ -132,7 +131,7 @@ struct GeneratedUserStoryTests {
         #expect(config.secondaryText == "This user has no followers. Go follow them!")
     }
 
-    // US-008: Selecting follower opens UserInfoVC
+    // US-008: Selecting Follower Opens User Info
     @Test("US-008: Selecting follower presents UserInfoVC")
     func testSelectingFollowerPresentsUserInfoVC() throws {
         let vc = FollowerListVC(username: "octocat")
@@ -160,7 +159,7 @@ struct GeneratedUserStoryTests {
         }
     }
 
-    // US-009: Empty Favorites State shows configuration
+    // US-009: Empty Favorites State
     @Test("US-009: Empty Favorites state displayed")
     func testEmptyFavoritesState() throws {
         let vc = FavoritesListVC()
@@ -177,6 +176,6 @@ struct GeneratedUserStoryTests {
         }
 
         #expect(config.text == "No Favorites")
-        #expect(config.secondaryText == "Add a favorite on the follower list screen", "Secondary text should match expected value")
+        #expect(config.secondaryText == "Add a favorite on the follower list screen")
     }
 }
