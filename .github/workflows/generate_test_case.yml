@@ -163,11 +163,16 @@ jobs:
         git commit -m "Update GeneratedUserStoryTests with latest user stories" || echo "No changes to commit"
         git push
 
-    - name: Build and Run Tests
-      run: |
-        xcodebuild \
-          -workspace GHFollowers.xcworkspace \
-          -scheme GHFollowersTests \
-          -sdk iphonesimulator \
-          -destination 'platform=iOS Simulator,name=iPhone 14' \
-          build run
+  build-and-run-tests:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Build and Run Tests
+        run: |
+          xcodebuild \
+            -workspace GHFollowers.xcworkspace \
+            -scheme GHFollowersTests \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 14' \
+            build run
