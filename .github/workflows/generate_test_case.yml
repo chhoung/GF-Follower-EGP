@@ -169,5 +169,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Run GeneratedUserStoryTests
-        run: swift run GeneratedUserStoryTests
+      - name: Build and Run Tests
+        run: |
+          xcodebuild test \
+            -workspace GHFollowers.xcworkspace \
+            -scheme GHFollowersTests \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -enableCodeCoverage YES
