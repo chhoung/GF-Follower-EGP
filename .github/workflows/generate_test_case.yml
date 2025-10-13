@@ -169,7 +169,5 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Build
-        run: swift build
       - name: Build and Run Tests
         run: swift test
