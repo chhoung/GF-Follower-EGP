@@ -6,8 +6,7 @@ import UIKit
 @testable import GHFollowers
 
 @MainActor
-struct GeneratedUserStoryTestsc {
-
+struct GeneratedUserStoryTests {
 
     // US-001: Search for GitHub User
     @Test("US-001: SearchVC basic wiring")
@@ -20,7 +19,6 @@ struct GeneratedUserStoryTestsc {
     }
 
     // US-002: Handle Empty Username Search
-    // We verify the guard condition path by calling pushFollowerListVC with empty text.
     @Test("US-002: Empty username presents custom alert VC")
     func testEmptyUsernamePresentsAlert() throws {
         let root = UINavigationController(rootViewController: SearchVC())
@@ -37,14 +35,10 @@ struct GeneratedUserStoryTestsc {
         search.usernameTextField.text = "" // empty
         search.pushFollowerListVC()
 
-        // The project uses a custom GFAlertVC presented modally
-        // Give runloop a brief chance for presentation
         RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
         #expect(search.presentedViewController is GFAlertVC)
 
         if let alert = search.presentedViewController as? GFAlertVC {
-            // Title/message configured inside GFAlertVC via properties
-            // We can rely on internal labels being configured in viewDidLoad
             _ = alert.view
             #expect(alert.titleLabel.text == "Empty Username")
             #expect(alert.messageLabel.text == "Please enter a username. We need to know who to look for 😀.")
@@ -52,8 +46,7 @@ struct GeneratedUserStoryTestsc {
         }
     }
 
-    // US-003: Dismiss Keyboard by tapping outside
-    // We validate gesture recognizer is added to root view and targets endEditing
+    // US-003: Dismiss Keyboard
     @Test("US-003: Dismiss keyboard tap gesture exists")
     func testDismissKeyboardGestureExists() throws {
         let vc = SearchVC()
@@ -63,7 +56,7 @@ struct GeneratedUserStoryTestsc {
         #expect(hasTap)
     }
 
-    // US-004: Clear Text Field on Return to SearchVC
+    // US-004: Clear Text Field on Return
     @Test("US-004: Text field cleared in viewWillAppear")
     func testTextFieldClearedOnAppear() throws {
         let nav = UINavigationController(rootViewController: UIViewController())
@@ -77,7 +70,6 @@ struct GeneratedUserStoryTestsc {
     }
 
     // US-005: View Followers in Grid
-    // Verify 3-column layout sizing is consistent with UIHelper and collection view is configured
     @Test("US-005: Follower list grid and dataSource configured")
     func testFollowerListGridSetup() throws {
         let vc = FollowerListVC(username: "octocat")
@@ -85,7 +77,6 @@ struct GeneratedUserStoryTestsc {
         #expect(vc.collectionView != nil)
         #expect(vc.dataSource != nil)
 
-        // Assert flow layout columns: item width derived from UIHelper
         #expect(vc.collectionView.collectionViewLayout is UICollectionViewFlowLayout)
         if let flow = vc.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             let width = vc.view.bounds.width
@@ -97,13 +88,12 @@ struct GeneratedUserStoryTestsc {
         }
     }
 
-    // US-006: Search Through Followers filters results (case-insensitive)
+    // US-006: Search Through Followers
     @Test("US-006: Search filters followers in real-time")
     func testSearchFiltersFollowers() throws {
         let vc = FollowerListVC(username: "octocat")
         _ = vc.view
 
-        // Seed followers list directly and configure data source
         vc.followers = [
             Follower(login: "Alice", avatarUrl: ""),
             Follower(login: "bob", avatarUrl: ""),
@@ -112,7 +102,6 @@ struct GeneratedUserStoryTestsc {
         vc.configureCollectionView()
         vc.configureDataSource()
 
-        // Create a search controller and apply filter 'bo' (should match 'bob')
         let searchController = UISearchController()
         searchController.searchBar.text = "Bo"
         vc.updateSearchResults(for: searchController)
@@ -122,29 +111,27 @@ struct GeneratedUserStoryTestsc {
         #expect(vc.filteredFollowers.first?.login == "bob")
     }
 
-    // US-007: Empty State for No Followers shows appropriate configuration
+    // US-007: Empty State for No Followers
     @Test("US-007: Empty state shown when no followers")
     func testEmptyStateForNoFollowers() throws {
         let vc = FollowerListVC(username: "someone")
         _ = vc.view
 
-        // Ensure no loading in progress and no followers
         vc.isLoadingMoreFollowers = false
         vc.followers = []
         vc.updateUI(with: [])
         vc.updateContentUnavailableConfiguration(using: vc.contentUnavailableConfigurationState)
-        
-        // Assert: Verify the content unavailable configuration
+
         guard let config = vc.contentUnavailableConfiguration as? UIContentUnavailableConfiguration else {
             #expect(Bool(false), "Expected UIContentUnavailableConfiguration, but got \(String(describing: vc.contentUnavailableConfiguration))")
             return
         }
-        
+
         #expect(config.text == "No Followers")
         #expect(config.secondaryText == "This user has no followers. Go follow them!")
     }
 
-    // US-008: Selecting follower opens UserInfoVC
+    // US-008: Selecting Follower Opens User Info
     @Test("US-008: Selecting follower presents UserInfoVC")
     func testSelectingFollowerPresentsUserInfoVC() throws {
         let vc = FollowerListVC(username: "octocat")
@@ -154,7 +141,6 @@ struct GeneratedUserStoryTestsc {
         window.makeKeyAndVisible()
         _ = vc.view
 
-        // Seed one follower and configure data source
         vc.followers = [Follower(login: "octodog", avatarUrl: "")]
         vc.configureCollectionView()
         vc.configureDataSource()
@@ -173,31 +159,23 @@ struct GeneratedUserStoryTestsc {
         }
     }
 
-    // US-009: Empty Favorites State shows configuration
+    // US-009: Empty Favorites State
     @Test("US-009: Empty Favorites state displayed")
     func testEmptyFavoritesState() throws {
-        // Arrange: Set up the view controller
         let vc = FavoritesListVC()
-        
-        // Trigger view lifecycle to ensure viewDidLoad and other setup methods are called
         vc.loadViewIfNeeded()
-        
-        // Act: Set favorites to empty and update the UI
+
         vc.favorites = []
         vc.updateUI(with: [])
-        
-        // Ensure the configuration update is processed
+
         vc.updateContentUnavailableConfiguration(using: vc.contentUnavailableConfigurationState)
-        
-        // Assert: Verify the content unavailable configuration
+
         guard let config = vc.contentUnavailableConfiguration as? UIContentUnavailableConfiguration else {
             #expect(Bool(false), "Expected UIContentUnavailableConfiguration, but got \(String(describing: vc.contentUnavailableConfiguration))")
             return
         }
-        
-        // Verify configuration properties
+
         #expect(config.text == "No Favorites")
-        #expect(config.secondaryText == "Add a favorite on the follower list screen", "Secondary text should match expected value")
+        #expect(config.secondaryText == "Add a favorite on the follower list screen")
     }
 }
-
