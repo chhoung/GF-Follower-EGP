@@ -56,12 +56,19 @@ jobs:
         - Imports: import Testing, import UIKit, @testable import GHFollowers
         - @MainActor struct GeneratedUserStoryTests
         - Test format: // US-XXX: Title, @Test("US-XXX: Description"), func testDescription()
-        - Assertions: #expect(condition), #expect(value == expected)
+        - Assertions: Only use #expect(condition) style.
+             Examples: #expect(alert.titleLabel.text == "Empty Username")
+             Do NOT use #expect(value).to(equal(...)) or any XCTest/Quick syntax.
         - Error handling: Issue.record("message")
         - Async: RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
         - UI setup: UIWindow(frame: UIScreen.main.bounds), UINavigationController
         - View lifecycle: _ = vc.view, vc.loadViewIfNeeded()
         - Data: Follower(login: "username", avatarUrl: "")
+
+        IMPORTANT:
+        - Only use #expect(condition) for assertions.
+        - Rewrite any old .to(equal(...)) patterns to #expect(value == expected)
+        - Always ensure assertions follow #expect(value == expected) format.
 
         COMMON PATTERNS:
         - SearchVC: UINavigationController + UIWindow setup, text field validation
@@ -155,3 +162,12 @@ jobs:
         git add GHFollowersTests/GeneratedUserStoryTests.swift
         git commit -m "Update GeneratedUserStoryTests with latest user stories" || echo "No changes to commit"
         git push
+
+    - name: Build and Run Tests
+      run: |
+        xcodebuild \
+          -workspace GHFollowers.xcworkspace \
+          -scheme GHFollowersTests \
+          -sdk iphonesimulator \
+          -destination 'platform=iOS Simulator,name=iPhone 14' \
+          build run

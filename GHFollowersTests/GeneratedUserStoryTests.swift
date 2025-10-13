@@ -6,267 +6,198 @@ import UIKit
 @testable import GHFollowers
 
 @MainActor
-struct GeneratedUserStoryTests {
+struct GeneratedUserStoryTestsc {
+
 
     // US-001: Search for GitHub User
-    @Test("US-001: Verifies SearchVC loads correctly and has expected button and placeholder text.")
-    func testSearchVCBasicWiring() {
-        /*
-        - User can enter a username in the text field
-        - User can tap 'Get Followers' button to search
-        - User can press return key to submit search
-        - App navigates to follower list screen on successful search
-        */
-
+    @Test("US-001: SearchVC basic wiring")
+    func testSearchVCBasicWiring() throws {
         let vc = SearchVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
-        _ = vc.view
+        _ = vc.view // trigger load
         #expect(vc.view.backgroundColor == .systemBackground)
         #expect(vc.callToActionButton.titleLabel?.text == "Get Followers")
         #expect(vc.usernameTextField.placeholder == "Enter a username")
     }
 
     // US-002: Handle Empty Username Search
-    @Test("US-002: Verifies custom GFAlertVC appears when user tries to search without a username.")
-    func testEmptyUsernamePresentsAlert() {
-        /*
-        - Alert appears when 'Get Followers' is tapped with empty text field
-        - Alert shows title 'Empty Username'
-        - Alert shows message 'Please enter a username. We need to know who to look for 😀.'
-        - Alert has 'Ok' button to dismiss
-        */
-
-        let vc = SearchVC()
-        let navigationController = UINavigationController(rootViewController: vc)
+    // We verify the guard condition path by calling pushFollowerListVC with empty text.
+    @Test("US-002: Empty username presents custom alert VC")
+    func testEmptyUsernamePresentsAlert() throws {
+        let root = UINavigationController(rootViewController: SearchVC())
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
+        window.rootViewController = root
         window.makeKeyAndVisible()
 
-        _ = vc.view
-        vc.callToActionButton.sendActions(for: .touchUpInside)
-
-        RunLoop.current.run()
-
-        guard let alert = vc.presentedViewController as? GFAlertVC else {
-            Issue.record("Expected a GFAlertVC to be presented")
+        guard let search = root.topViewController as? SearchVC else {
+            Issue.record("Root top VC is not SearchVC")
             return
         }
 
-        #expect(alert.titleLabel.text).to(equal("Empty Username"))
-        #expect(alert.messageLabel.text).to(equal("Please enter a username. We need to know who to look for 😀."))
-        #expect(alert.actionButton.titleLabel?.text).to(equal("Ok"))
+        _ = search.view
+        search.usernameTextField.text = "" // empty
+        search.pushFollowerListVC()
+
+        // The project uses a custom GFAlertVC presented modally
+        // Give runloop a brief chance for presentation
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
+        #expect(search.presentedViewController is GFAlertVC)
+
+        if let alert = search.presentedViewController as? GFAlertVC {
+            // Title/message configured inside GFAlertVC via properties
+            // We can rely on internal labels being configured in viewDidLoad
+            _ = alert.view
+            #expect(alert.titleLabel.text == "Empty Username")
+            #expect(alert.messageLabel.text == "Please enter a username. We need to know who to look for 😀.")
+            #expect(alert.actionButton.titleLabel?.text == "Ok")
+        }
     }
 
-    // US-003: Dismiss Keyboard
-    @Test("US-003: Ensures tap gesture recognizer exists to dismiss keyboard.")
-    func testDismissKeyboardGestureExists() {
-        /*
-        - Keyboard dismisses when user taps outside text field
-        - Text field loses focus
-        - Keyboard animation is smooth
-        */
-
+    // US-003: Dismiss Keyboard by tapping outside
+    // We validate gesture recognizer is added to root view and targets endEditing
+    @Test("US-003: Dismiss keyboard tap gesture exists")
+    func testDismissKeyboardGestureExists() throws {
         let vc = SearchVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
         _ = vc.view
-        vc.usernameTextField.becomeFirstResponder()
-
-        RunLoop.current.run()
-
-        vc.view.sendActions(for: .touchUpInside)
-
-        RunLoop.current.run()
-
-        #expect(vc.usernameTextField.isFirstResponder).to(beFalse())
+        let gestures = vc.view.gestureRecognizers ?? []
+        let hasTap = gestures.contains { $0 is UITapGestureRecognizer }
+        #expect(hasTap)
     }
 
-    // US-004: Clear Text Field on Return
-    @Test("US-004: Verifies username field is cleared when returning to SearchVC.")
-    func testTextFieldClearedOnAppear() {
-        /*
-        - Text field is empty when returning to SearchVC
-        - Previous search text is cleared
-        - Text field is ready for new input
-        */
+    // US-004: Clear Text Field on Return to SearchVC
+    @Test("US-004: Text field cleared in viewWillAppear")
+    func testTextFieldClearedOnAppear() throws {
+        let nav = UINavigationController(rootViewController: UIViewController())
+        let search = SearchVC()
+        nav.pushViewController(search, animated: false)
 
-        let vc = SearchVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
-        _ = vc.view
-        vc.usernameTextField.text = "octocat"
-
-        vc.usernameTextField.resignFirstResponder()
-        vc.viewWillAppear(false)
-
-        #expect(vc.usernameTextField.text).to(beEmpty())
+        _ = search.view
+        search.usernameTextField.text = "octocat"
+        search.viewWillAppear(false)
+        #expect((search.usernameTextField.text ?? "").isEmpty)
     }
 
     // US-005: View Followers in Grid
-    @Test("US-005: Validates follower list collectionView grid setup and 3-column layout sizing.")
-    func testFollowerListGridSetup() {
-        /*
-        - Followers are displayed in a 3-column grid
-        - Each follower shows avatar image and username
-        - Grid layout adapts to different screen sizes
-        */
+    // Verify 3-column layout sizing is consistent with UIHelper and collection view is configured
+    @Test("US-005: Follower list grid and dataSource configured")
+    func testFollowerListGridSetup() throws {
+        let vc = FollowerListVC(username: "octocat")
+        _ = vc.view // triggers viewDidLoad
+        #expect(vc.collectionView != nil)
+        #expect(vc.dataSource != nil)
 
-        let vc = FollowerListVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
-        _ = vc.view
-
-        vc.followers = [Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")]
-        vc.collectionView.reloadData()
-
-        RunLoop.current.run()
-
-        #expect(vc.collectionView.numberOfItems(inSection: 0)).to(equal(1))
-
-        let cell = vc.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? FollowerCell
-        #expect(cell?.usernameLabel.text).to(equal("octocat"))
+        // Assert flow layout columns: item width derived from UIHelper
+        #expect(vc.collectionView.collectionViewLayout is UICollectionViewFlowLayout)
+        if let flow = vc.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            let width = vc.view.bounds.width
+            let padding: CGFloat = 12
+            let spacing: CGFloat = 10
+            let available = width - (padding * 2) - (spacing * 2)
+            let expectedItemWidth = available / 3
+            #expect(flow.itemSize.width == expectedItemWidth)
+        }
     }
 
-    // US-006: Search Through Followers
-    @Test("US-006: Verifies follower list filters search results case-insensitively in real time.")
-    func testSearchFiltersFollowers() {
-        /*
-        - Search bar appears in navigation
-        - Search filters followers in real-time
-        - Search is case-insensitive
-        - Empty search shows all followers
-        */
-
-        let vc = FollowerListVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
+    // US-006: Search Through Followers filters results (case-insensitive)
+    @Test("US-006: Search filters followers in real-time")
+    func testSearchFiltersFollowers() throws {
+        let vc = FollowerListVC(username: "octocat")
         _ = vc.view
 
-        let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
-        vc.followers = [follower]
-        vc.collectionView.reloadData()
+        // Seed followers list directly and configure data source
+        vc.followers = [
+            Follower(login: "Alice", avatarUrl: ""),
+            Follower(login: "bob", avatarUrl: ""),
+            Follower(login: "Charlie", avatarUrl: "")
+        ]
+        vc.configureCollectionView()
+        vc.configureDataSource()
 
-        RunLoop.current.run()
+        // Create a search controller and apply filter 'bo' (should match 'bob')
+        let searchController = UISearchController()
+        searchController.searchBar.text = "Bo"
+        vc.updateSearchResults(for: searchController)
 
-        vc.searchController.searchBar.text = "octocat"
-        vc.searchController.searchBar.sendActions(for: .valueChanged)
-
-        RunLoop.current.run()
-
-        #expect(vc.filteredFollowers.count).to(equal(1))
-        #expect(vc.collectionView.numberOfItems(inSection: 0)).to(equal(1))
+        #expect(vc.isSearching)
+        #expect(vc.filteredFollowers.count == 1)
+        #expect(vc.filteredFollowers.first?.login == "bob")
     }
 
-    // US-007: Empty State for No Followers
-    @Test("US-007: Ensures empty state view appears with correct text when user has no followers.")
-    func testEmptyStateForNoFollowers() {
-        /*
-        - Empty state view appears when no followers
-        - Shows 'No Followers' message
-        - Shows 'This user has no followers. Go follow them!' subtitle
-        */
-
-        let vc = FollowerListVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
+    // US-007: Empty State for No Followers shows appropriate configuration
+    @Test("US-007: Empty state shown when no followers")
+    func testEmptyStateForNoFollowers() throws {
+        let vc = FollowerListVC(username: "someone")
         _ = vc.view
 
+        // Ensure no loading in progress and no followers
+        vc.isLoadingMoreFollowers = false
         vc.followers = []
-        vc.collectionView.reloadData()
-
-        RunLoop.current.run()
-
-        guard vc.emptyStateView.isHidden == false else {
-            Issue.record("Expected empty state view to be visible")
+        vc.updateUI(with: [])
+        vc.updateContentUnavailableConfiguration(using: vc.contentUnavailableConfigurationState)
+        
+        // Assert: Verify the content unavailable configuration
+        guard let config = vc.contentUnavailableConfiguration as? UIContentUnavailableConfiguration else {
+            #expect(Bool(false), "Expected UIContentUnavailableConfiguration, but got \(String(describing: vc.contentUnavailableConfiguration))")
             return
         }
-
-        #expect(vc.emptyStateView.messageLabel.text).to(equal("No Followers"))
-        #expect(vc.emptyStateView.subtitleLabel.text).to(equal("This user has no followers. Go follow them!"))
+        
+        #expect(config.text == "No Followers")
+        #expect(config.secondaryText == "This user has no followers. Go follow them!")
     }
 
-    // US-008: Selecting Follower Opens User Info
-    @Test("US-008: Verifies selecting follower presents UserInfoVC modally inside navigation controller.")
-    func testSelectingFollowerPresentsUserInfoVC() {
-        /*
-        - Tapping follower cell presents UserInfoVC
-        - UserInfoVC shows selected user's info
-        - Presentation is modal inside navigation controller
-        */
-
-        let vc = FollowerListVC()
-        let navigationController = UINavigationController(rootViewController: vc)
+    // US-008: Selecting follower opens UserInfoVC
+    @Test("US-008: Selecting follower presents UserInfoVC")
+    func testSelectingFollowerPresentsUserInfoVC() throws {
+        let vc = FollowerListVC(username: "octocat")
         let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
+        let nav = UINavigationController(rootViewController: vc)
+        window.rootViewController = nav
         window.makeKeyAndVisible()
-
         _ = vc.view
 
-        let follower = Follower(login: "octocat", avatarUrl: "http://example.com/avatar.png")
-        vc.followers = [follower]
-        vc.collectionView.reloadData()
+        // Seed one follower and configure data source
+        vc.followers = [Follower(login: "octodog", avatarUrl: "")]
+        vc.configureCollectionView()
+        vc.configureDataSource()
 
-        RunLoop.current.run()
+        let indexPath = IndexPath(item: 0, section: 0)
+        vc.collectionView(vc.collectionView, didSelectItemAt: indexPath)
 
-        vc.collectionView.delegate?.collectionView?(vc.collectionView, didSelectItemAt: IndexPath(item: 0, section: 0))
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.05))
 
-        RunLoop.current.run()
-
-        guard let userInfoVC = navigationController.topViewController as? UserInfoVC else {
-            Issue.record("Expected to navigate to UserInfoVC")
-            return
+        #expect(vc.presentedViewController is UINavigationController)
+        if let presentedNav = vc.presentedViewController as? UINavigationController {
+            #expect(presentedNav.topViewController is UserInfoVC)
+            if let userInfo = presentedNav.topViewController as? UserInfoVC {
+                #expect(userInfo.username == "octodog")
+            }
         }
-
-        #expect(userInfoVC.usernameLabel.text).to(equal("octocat"))
     }
 
-    // US-009: Empty Favorites State
-    @Test("US-009: Ensures empty favorites view is displayed with proper title and subtitle.")
-    func testEmptyFavoritesState() {
-        /*
-        - Empty state view appears when no favorites
-        - Shows 'No Favorites' message
-        - Shows 'Add a favorite on the follower list screen' subtitle
-        */
-
+    // US-009: Empty Favorites State shows configuration
+    @Test("US-009: Empty Favorites state displayed")
+    func testEmptyFavoritesState() throws {
+        // Arrange: Set up the view controller
         let vc = FavoritesListVC()
-        let navigationController = UINavigationController(rootViewController: vc)
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        window.rootViewController = navigationController
-        window.makeKeyAndVisible()
-
-        _ = vc.view
-
+        
+        // Trigger view lifecycle to ensure viewDidLoad and other setup methods are called
+        vc.loadViewIfNeeded()
+        
+        // Act: Set favorites to empty and update the UI
         vc.favorites = []
-        vc.collectionView.reloadData()
-
-        RunLoop.current.run()
-
-        guard vc.emptyStateView.isHidden == false else {
-            Issue.record("Expected empty state view to be visible")
+        vc.updateUI(with: [])
+        
+        // Ensure the configuration update is processed
+        vc.updateContentUnavailableConfiguration(using: vc.contentUnavailableConfigurationState)
+        
+        // Assert: Verify the content unavailable configuration
+        guard let config = vc.contentUnavailableConfiguration as? UIContentUnavailableConfiguration else {
+            #expect(Bool(false), "Expected UIContentUnavailableConfiguration, but got \(String(describing: vc.contentUnavailableConfiguration))")
             return
         }
-
-        #expect(vc.emptyStateView.messageLabel.text).to(equal("No Favorites"))
-        #expect(vc.emptyStateView.subtitleLabel.text).to(equal("Add a favorite on the follower list screen"))
+        
+        // Verify configuration properties
+        #expect(config.text == "No Favorites")
+        #expect(config.secondaryText == "Add a favorite on the follower list screen", "Secondary text should match expected value")
     }
 }
+
