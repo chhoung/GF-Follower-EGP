@@ -164,15 +164,12 @@ jobs:
         git push
 
   build-and-run-tests:
+    needs: generate-tests
     runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Build
+        run: swift build
       - name: Build and Run Tests
-        run: |
-          xcodebuild \
-            -workspace GHFollowers.xcworkspace \
-            -scheme GHFollowersTests \
-            -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 14' \
-            build run
+        run: swift test
