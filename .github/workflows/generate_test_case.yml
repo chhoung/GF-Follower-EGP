@@ -175,4 +175,4 @@ jobs:
           -scheme GHFollowers \
           -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.5' \
           -only-testing GHFollowersTests/GeneratedUserStoryTests \
-          | xcbeautify --quieter --time
+          | xcbeautify --renderer github-actions
