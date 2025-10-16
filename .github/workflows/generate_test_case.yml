@@ -171,10 +171,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Build and Run Tests
         run: |
-          set -o pipefail
-          xcodebuild test \
-            -scheme GHFollowers \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.5' \
-            -only-testing GHFollowersTests/GeneratedUserStoryTests \
-            -enableCodeCoverage YES \
-          | xcbeautify --quiet --colored --report html --report junit --time
+         xcodebuild test \
+          -scheme GHFollowers \
+          -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.5' \
+          -only-testing GHFollowersTests/GeneratedUserStoryTests \
+          | xcbeautify --quieter --time
