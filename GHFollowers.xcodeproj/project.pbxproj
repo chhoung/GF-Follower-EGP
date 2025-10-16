@@ -55,19 +55,11 @@
 			remoteGlobalIDString = EDDFE23D23B6C71E00C026C3;
 			remoteInfo = GHFollowers;
 		};
-		0ED84B992E9630610088DAC5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = EDDFE23623B6C71E00C026C3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = EDDFE23D23B6C71E00C026C3;
-			remoteInfo = GHFollowers;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0E2753732E93D7CE002FEB83 /* GHFollowersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GHFollowersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5BE3112E9FAA060010D6DF /* GHFollowers.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GHFollowers.xctestplan; sourceTree = "<group>"; };
-		0ED84B932E9630610088DAC5 /* GHFollowersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GHFollowersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED005C8B23D8FB5B00C7FB7F /* GFUserInfoHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFUserInfoHeaderVC.swift; sourceTree = "<group>"; };
 		ED005C8D23D8FBF800C7FB7F /* GFSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSecondaryTitleLabel.swift; sourceTree = "<group>"; };
 		ED005C9123D904F600C7FB7F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -112,18 +104,10 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		0E2753742E93D7CE002FEB83 /* GHFollowersTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GHFollowersTests; sourceTree = "<group>"; };
-		0ED84B942E9630610088DAC5 /* GHFollowersUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = GHFollowersUITests; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		0E2753702E93D7CE002FEB83 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0ED84B902E9630610088DAC5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -303,7 +287,6 @@
 				0E5BE3112E9FAA060010D6DF /* GHFollowers.xctestplan */,
 				EDDFE24023B6C71E00C026C3 /* GHFollowers */,
 				0E2753742E93D7CE002FEB83 /* GHFollowersTests */,
-				0ED84B942E9630610088DAC5 /* GHFollowersUITests */,
 				EDDFE23F23B6C71E00C026C3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -313,7 +296,6 @@
 			children = (
 				EDDFE23E23B6C71E00C026C3 /* GHFollowers.app */,
 				0E2753732E93D7CE002FEB83 /* GHFollowersTests.xctest */,
-				0ED84B932E9630610088DAC5 /* GHFollowersUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -369,29 +351,6 @@
 			productReference = 0E2753732E93D7CE002FEB83 /* GHFollowersTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		0ED84B922E9630610088DAC5 /* GHFollowersUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0ED84B9D2E9630610088DAC5 /* Build configuration list for PBXNativeTarget "GHFollowersUITests" */;
-			buildPhases = (
-				0ED84B8F2E9630610088DAC5 /* Sources */,
-				0ED84B902E9630610088DAC5 /* Frameworks */,
-				0ED84B912E9630610088DAC5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0ED84B9A2E9630610088DAC5 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				0ED84B942E9630610088DAC5 /* GHFollowersUITests */,
-			);
-			name = GHFollowersUITests;
-			packageProductDependencies = (
-			);
-			productName = GHFollowersUITests;
-			productReference = 0ED84B932E9630610088DAC5 /* GHFollowersUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		EDDFE23D23B6C71E00C026C3 /* GHFollowers */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EDDFE25223B6C71E00C026C3 /* Build configuration list for PBXNativeTarget "GHFollowers" */;
@@ -424,10 +383,6 @@
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = EDDFE23D23B6C71E00C026C3;
 					};
-					0ED84B922E9630610088DAC5 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = EDDFE23D23B6C71E00C026C3;
-					};
 					EDDFE23D23B6C71E00C026C3 = {
 						CreatedOnToolsVersion = 11.3;
 					};
@@ -448,20 +403,12 @@
 			targets = (
 				EDDFE23D23B6C71E00C026C3 /* GHFollowers */,
 				0E2753722E93D7CE002FEB83 /* GHFollowersTests */,
-				0ED84B922E9630610088DAC5 /* GHFollowersUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0E2753712E93D7CE002FEB83 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0ED84B912E9630610088DAC5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -481,13 +428,6 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		0E27536F2E93D7CE002FEB83 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0ED84B8F2E9630610088DAC5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -545,11 +485,6 @@
 			target = EDDFE23D23B6C71E00C026C3 /* GHFollowers */;
 			targetProxy = 0E2753772E93D7CE002FEB83 /* PBXContainerItemProxy */;
 		};
-		0ED84B9A2E9630610088DAC5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = EDDFE23D23B6C71E00C026C3 /* GHFollowers */;
-			targetProxy = 0ED84B992E9630610088DAC5 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -606,49 +541,6 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GHFollowers.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/GHFollowers";
-			};
-			name = Release;
-		};
-		0ED84B9B2E9630610088DAC5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 47CKZC7YD4;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GHFollowers;
-			};
-			name = Debug;
-		};
-		0ED84B9C2E9630610088DAC5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 47CKZC7YD4;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GHFollowers;
 			};
 			name = Release;
 		};
@@ -818,15 +710,6 @@
 			buildConfigurations = (
 				0E2753792E93D7CE002FEB83 /* Debug */,
 				0E27537A2E93D7CE002FEB83 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0ED84B9D2E9630610088DAC5 /* Build configuration list for PBXNativeTarget "GHFollowersUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0ED84B9B2E9630610088DAC5 /* Debug */,
-				0ED84B9C2E9630610088DAC5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
