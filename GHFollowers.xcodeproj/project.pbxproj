@@ -66,6 +66,7 @@
 
 /* Begin PBXFileReference section */
 		0E2753732E93D7CE002FEB83 /* GHFollowersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GHFollowersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E5BE3112E9FAA060010D6DF /* GHFollowers.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GHFollowers.xctestplan; sourceTree = "<group>"; };
 		0ED84B932E9630610088DAC5 /* GHFollowersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GHFollowersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED005C8B23D8FB5B00C7FB7F /* GFUserInfoHeaderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFUserInfoHeaderVC.swift; sourceTree = "<group>"; };
 		ED005C8D23D8FBF800C7FB7F /* GFSecondaryTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFSecondaryTitleLabel.swift; sourceTree = "<group>"; };
@@ -299,6 +300,7 @@
 		EDDFE23523B6C71E00C026C3 = {
 			isa = PBXGroup;
 			children = (
+				0E5BE3112E9FAA060010D6DF /* GHFollowers.xctestplan */,
 				EDDFE24023B6C71E00C026C3 /* GHFollowers */,
 				0E2753742E93D7CE002FEB83 /* GHFollowersTests */,
 				0ED84B942E9630610088DAC5 /* GHFollowersUITests */,
@@ -575,7 +577,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.template.GHFollowersTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -598,7 +600,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.template.GHFollowersTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -619,7 +621,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.template.GHFollowersUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -641,7 +643,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.template.GHFollowersUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowersUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -775,14 +777,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H69U55MWXW;
+				DEVELOPMENT_TEAM = 47CKZC7YD4;
 				INFOPLIST_FILE = GHFollowers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.seanallen.GHFollowers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -794,14 +796,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = H69U55MWXW;
+				DEVELOPMENT_TEAM = 47CKZC7YD4;
 				INFOPLIST_FILE = GHFollowers/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.seanallen.GHFollowers;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kimchhorng.GHFollowers;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;

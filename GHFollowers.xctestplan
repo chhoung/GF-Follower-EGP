@@ -1,0 +1,37 @@
+{
+  "configurations" : [
+    {
+      "id" : "523F760D-1BDC-4495-BA42-902927391D44",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:GHFollowers.xcodeproj",
+      "identifier" : "EDDFE23D23B6C71E00C026C3",
+      "name" : "GHFollowers"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:GHFollowers.xcodeproj",
+        "identifier" : "0E2753722E93D7CE002FEB83",
+        "name" : "GHFollowersTests"
+      }
+    },
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:GHFollowers.xcodeproj",
+        "identifier" : "0ED84B922E9630610088DAC5",
+        "name" : "GHFollowersUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
