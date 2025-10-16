@@ -167,7 +167,6 @@ struct GeneratedUserStoryTests {
 
         vc.favorites = []
         vc.updateUI(with: [])
-
         vc.updateContentUnavailableConfiguration(using: vc.contentUnavailableConfigurationState)
 
         guard let config = vc.contentUnavailableConfiguration as? UIContentUnavailableConfiguration else {
