@@ -175,6 +175,4 @@ jobs:
           -scheme GHFollowers \
           -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.5,arch=arm64' \
           -only-testing GHFollowersTests/GeneratedUserStoryTests \
-          -skip-testing:GHFollowersTests/GeneratedUserStoryTests@preview \  # Skip any preview-tagged subsets if exist
-          ENABLE_PREVIEWS=NO \
-          | xcbeautify
+          | xcbeautify --renderer github-actions
