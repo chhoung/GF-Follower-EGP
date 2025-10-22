@@ -1,5 +1,7 @@
 
-// GeneratedUserStoryTests.swift, AUTO-GENERATED, Copyright © 2025 Kimchhorng Pheng
+// GeneratedUserStoryTests.swift
+// AUTO-GENERATED, 2025-10-11 12:00:00
+// Copyright © 2025 Kimchhorng Pheng
 
 import Testing
 import UIKit
