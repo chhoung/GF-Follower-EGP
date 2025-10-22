@@ -43,7 +43,7 @@ class SearchVC: UIViewController {
     
     @objc func pushFollowerListVC() {
         guard isUsernameEntered else {
-            presentGFAlert(title: "Empty Username", message: "Please enter a username. We need to know who to look for 😀.", buttonTitle: "Ok")
+            presentGFAlert(title: "Empty Usernames", message: "Please enter a username. We need to know who to look for 😀.", buttonTitle: "Ok")
             return
         }
         
