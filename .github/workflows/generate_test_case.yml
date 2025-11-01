@@ -141,6 +141,12 @@ jobs:
         # Clean up any markdown formatting that might be in the response
         CLEAN_RESPONSE=$(echo "$RESPONSE" | sed 's/```swift//g' | sed 's/```//g' | sed '/^Below are the generated Swift test files/d' | sed '/^### Generated.*Tests\.swift/d' | sed '/^```swift/d' | sed '/^```$/d')
         
+        if [ -z "$CLEAN_RESPONSE" ]; then
+          echo "❌ AI returned empty response — skipping file write"
+          echo "file_generated=false" >> "$GITHUB_OUTPUT"
+          exit 1
+        fi
+
         echo "$CLEAN_RESPONSE" > GHFollowersTests/GeneratedUserStoryTests.swift
 
         # Clean up temporary files
