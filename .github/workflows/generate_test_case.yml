@@ -94,7 +94,11 @@ jobs:
           echo "Existing test file (update this with new patterns):" >> prompt.txt
           cat GHFollowersTests/GeneratedUserStoryTests.swift >> prompt.txt
         fi
-      
+        
+        # # Add reference to the existing ManualGHFollowersTests.swift for pattern matching
+        # echo "" >> prompt.txt
+        # echo "Reference file (ManualGHFollowersTests.swift) for exact pattern matching:" >> prompt.txt
+        # cat GHFollowersTests/ManualGHFollowersTests.swift >> prompt.txt
         
         # Read the complete prompt
         PROMPT=$(cat prompt.txt)
