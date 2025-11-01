@@ -175,7 +175,7 @@
                     "test_description": "Ensures empty favorites view is displayed with proper title and subtitle.",
                     "acceptance_criteria": [
                         "Empty state view appears when no favorites",
-                        "Shows 'No Favorites' message",
+                        "Shows 'No Favoritesr' message",
                         "Shows 'Add a favorite on the follower list screen' subtitle"
                     ]
                 }
