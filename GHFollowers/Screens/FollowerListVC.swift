@@ -56,7 +56,7 @@ class FollowerListVC: GFDataLoadingVC {
         if followers.isEmpty && !isLoadingMoreFollowers {
             var config = UIContentUnavailableConfiguration.empty()
             config.image = .init(systemName: "person.slash")
-            config.text = "No Followers"
+            config.text = "No Followerrs"
             config.secondaryText = "This user has no followers. Go follow them!"
             contentUnavailableConfiguration = config
         } else if isSearching && filteredFollowers.isEmpty {

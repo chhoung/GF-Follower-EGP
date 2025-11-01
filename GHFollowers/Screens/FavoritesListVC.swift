@@ -31,7 +31,7 @@ class FavoritesListVC: GFDataLoadingVC {
         if favorites.isEmpty {
             var config = UIContentUnavailableConfiguration.empty()
             config.image = .init(systemName: "star")
-            config.text = "No Favorites"
+            config.text = "No Favourites"
             config.secondaryText = "Add a favorite on the follower list screen"
             contentUnavailableConfiguration = config
         } else {

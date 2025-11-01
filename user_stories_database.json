@@ -117,6 +117,7 @@
                     "acceptance_criteria": [
                         "Search bar appears in navigation",
                         "Search filters followers in real-time",
+                        "Add spacing before and after the filter text, eg. ' Bo ' for 'bob'.",
                         "Search is case-insensitive",
                         "Empty search shows all followers"
                     ]

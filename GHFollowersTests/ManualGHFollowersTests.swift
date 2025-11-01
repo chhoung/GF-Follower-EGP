@@ -11,7 +11,7 @@ import UIKit
 @testable import GHFollowers
 
 @MainActor
-struct GHFollowersTests {
+struct ManualGHFollowersTests {
 
 
     // US-001: Search for GitHub User

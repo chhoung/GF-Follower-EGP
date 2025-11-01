@@ -105,7 +105,7 @@ struct GeneratedUserStoryTests {
         vc.configureDataSource()
 
         let searchController = UISearchController()
-        searchController.searchBar.text = "Bo"
+        searchController.searchBar.text = " Bo "
         vc.updateSearchResults(for: searchController)
 
         #expect(vc.isSearching)
