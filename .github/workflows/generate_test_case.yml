@@ -53,7 +53,8 @@ jobs:
         TEST REQUIREMENTS:
         - Single file: GeneratedUserStoryTests.swift
         - File header: // GeneratedUserStoryTests.swift, 
-                       // AUTO-GENERATED, current date/time, 
+                       // AUTO-GENERATED, 
+                       // current date/time, 
                        // Copyright © 2025 Kimchhorng Pheng
         - Imports: import Testing, import UIKit, @testable import GHFollowers
         - @MainActor struct GeneratedUserStoryTests
